@@ -1,0 +1,793 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BE26D3BA18909E6200DD31AB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3801890685900DD31AB /* libz.dylib */; };
+		BE26D3BB18909E6B00DD31AB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D2AB188F163D00DD31AB /* Foundation.framework */; };
+		BE26D3BC18909E7D00DD31AB /* Printer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D2D2188F168300DD31AB /* Printer.m */; };
+		BE26D3BD18909E8700DD31AB /* PrintJob.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D2D0188F168300DD31AB /* PrintJob.m */; };
+		BE26D3BE18909E8900DD31AB /* PrinterError.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D2D4188F168300DD31AB /* PrinterError.m */; };
+		BE26D3BF18909E9800DD31AB /* Printer.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2D1188F168300DD31AB /* Printer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE26D3C018909E9D00DD31AB /* PrintJob.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2CF188F168300DD31AB /* PrintJob.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE26D3D31890C83600DD31AB /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D2B9188F163D00DD31AB /* XCTest.framework */; };
+		BE26D3D41890C83600DD31AB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D2A8188F163D00DD31AB /* Cocoa.framework */; };
+		BE26D3DD1890C83600DD31AB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE26D3DB1890C83600DD31AB /* InfoPlist.strings */; };
+		BE26D3DF1890C83700DD31AB /* Objective_CUPSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D3DE1890C83700DD31AB /* Objective_CUPSTests.m */; };
+		BE26D3E61890C8E000DD31AB /* Printer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D2D2188F168300DD31AB /* Printer.m */; };
+		BE26D3E71890C8E200DD31AB /* PrintJob.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D2D0188F168300DD31AB /* PrintJob.m */; };
+		BE26D3E81890C8E800DD31AB /* PrinterError.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D2D4188F168300DD31AB /* PrinterError.m */; };
+		BE26D3E91890C8FB00DD31AB /* Printer.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2D1188F168300DD31AB /* Printer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE26D3EA1890C8FE00DD31AB /* PrintJob.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2CF188F168300DD31AB /* PrintJob.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE26D3EB1890C90100DD31AB /* PrinterError.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2D3188F168300DD31AB /* PrinterError.h */; };
+		BE26D3ED1890CC3900DD31AB /* libcups.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3EC1890CC3900DD31AB /* libcups.dylib */; };
+		BE26D3EE1890CC4A00DD31AB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3801890685900DD31AB /* libz.dylib */; };
+		BE26D3EF1890CC9B00DD31AB /* libcups.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3EC1890CC3900DD31AB /* libcups.dylib */; };
+		BE26D3F01890CCA300DD31AB /* libcups.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3EC1890CC3900DD31AB /* libcups.dylib */; };
+		BE26D3F11890CCA600DD31AB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3801890685900DD31AB /* libz.dylib */; };
+		BE32CE1618C18A3E00DEE757 /* Printer_Validator.h in Headers */ = {isa = PBXBuildFile; fileRef = BE503D9718BF970200C84357 /* Printer_Validator.h */; };
+		BE42458718C63EE300B527B9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE42458018C63EB800B527B9 /* Foundation.framework */; };
+		BE42458A18C63EE300B527B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE42458918C63EE300B527B9 /* main.m */; };
+		BE42459418C63F1200B527B9 /* libObjective_CUPS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3C61890C83600DD31AB /* libObjective_CUPS.a */; };
+		BE42459518C63F1A00B527B9 /* libcups.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE42457B18C570A700B527B9 /* libcups.dylib */; };
+		BE42459618C63F2100B527B9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE42457D18C570AD00B527B9 /* libz.dylib */; };
+		BE503D9618BF966300C84357 /* CUPSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BECC149718BE7E300012B016 /* CUPSManager.m */; };
+		BECC149818BE7E300012B016 /* CUPSManager.h in Headers */ = {isa = PBXBuildFile; fileRef = BECC149618BE7E300012B016 /* CUPSManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BECC149918BE7E300012B016 /* CUPSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BECC149718BE7E300012B016 /* CUPSManager.m */; };
+		BECC149C18BE95D80012B016 /* CUPSManager.h in Headers */ = {isa = PBXBuildFile; fileRef = BECC149618BE7E300012B016 /* CUPSManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BECC149E18BE95FE0012B016 /* PrinterError.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2D3188F168300DD31AB /* PrinterError.h */; };
+		BECC14A418BE9AFD0012B016 /* libObjective_CUPS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3C61890C83600DD31AB /* libObjective_CUPS.a */; };
+		BECC14A818BEA0EA0012B016 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BECC14A718BEA0EA0012B016 /* LICENSE */; };
+		BEE0A0AF18BF8D47000AAB2B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BEE0A0AE18BF8912000AAB2B /* README.md */; };
+		BEE0A0B018BF8D6A000AAB2B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D2AB188F163D00DD31AB /* Foundation.framework */; };
+		BEE7AE0418C4C7D400F61EFA /* Printer_Validator.h in Headers */ = {isa = PBXBuildFile; fileRef = BE503D9718BF970200C84357 /* Printer_Validator.h */; };
+		BEE7AE0518C4C7E200F61EFA /* Objective-CUPS.h in Headers */ = {isa = PBXBuildFile; fileRef = BEE7AE0218C4C79D00F61EFA /* Objective-CUPS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BEE7AE0618C4C7E700F61EFA /* Objective-CUPS.h in Headers */ = {isa = PBXBuildFile; fileRef = BEE7AE0218C4C79D00F61EFA /* Objective-CUPS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BEE7AE0918C53CEA00F61EFA /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE7AE0718C53CEA00F61EFA /* Utility.m */; };
+		BEE7AE0A18C53CEA00F61EFA /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE7AE0718C53CEA00F61EFA /* Utility.m */; };
+		BEE7AE0B18C53CEA00F61EFA /* Utility.h in Headers */ = {isa = PBXBuildFile; fileRef = BEE7AE0818C53CEA00F61EFA /* Utility.h */; };
+		BEE7AE0C18C53CEA00F61EFA /* Utility.h in Headers */ = {isa = PBXBuildFile; fileRef = BEE7AE0818C53CEA00F61EFA /* Utility.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BE42459218C63F0900B527B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE26D29D188F163D00DD31AB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE26D3C51890C83600DD31AB;
+			remoteInfo = Objective_CUPS;
+		};
+		BE49049418C0E1F700DEBED1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE26D29D188F163D00DD31AB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE26D39418909E4F00DD31AB;
+			remoteInfo = "Objective-CUPS";
+		};
+		BECC14A518BE9B040012B016 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE26D29D188F163D00DD31AB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE26D3C51890C83600DD31AB;
+			remoteInfo = Objective_CUPS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BE26D2A8188F163D00DD31AB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		BE26D2AB188F163D00DD31AB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		BE26D2AC188F163D00DD31AB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		BE26D2AD188F163D00DD31AB /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		BE26D2B9188F163D00DD31AB /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		BE26D2CF188F168300DD31AB /* PrintJob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintJob.h; sourceTree = "<group>"; };
+		BE26D2D0188F168300DD31AB /* PrintJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintJob.m; sourceTree = "<group>"; };
+		BE26D2D1188F168300DD31AB /* Printer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Printer.h; sourceTree = "<group>"; };
+		BE26D2D2188F168300DD31AB /* Printer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Printer.m; sourceTree = "<group>"; };
+		BE26D2D3188F168300DD31AB /* PrinterError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrinterError.h; sourceTree = "<group>"; };
+		BE26D2D4188F168300DD31AB /* PrinterError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrinterError.m; sourceTree = "<group>"; };
+		BE26D331188F1A7F00DD31AB /* Objective-CUPS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Objective-CUPS-Prefix.pch"; sourceTree = "<group>"; };
+		BE26D368188F7D0A00DD31AB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		BE26D37E1890681300DD31AB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		BE26D3801890685900DD31AB /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		BE26D39518909E4F00DD31AB /* Objective-CUPS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "Objective-CUPS.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE26D3C61890C83600DD31AB /* libObjective_CUPS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjective_CUPS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE26D3CA1890C83600DD31AB /* Objective-CUPS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Objective-CUPS-Info.plist"; sourceTree = "<group>"; };
+		BE26D3D21890C83600DD31AB /* Objective_CUPSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Objective_CUPSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE26D3DA1890C83600DD31AB /* Objective_CUPSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Objective_CUPSTests-Info.plist"; sourceTree = "<group>"; };
+		BE26D3DC1890C83600DD31AB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BE26D3DE1890C83700DD31AB /* Objective_CUPSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Objective_CUPSTests.m; sourceTree = "<group>"; };
+		BE26D3EC1890CC3900DD31AB /* libcups.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcups.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib/libcups.dylib; sourceTree = DEVELOPER_DIR; };
+		BE42457B18C570A700B527B9 /* libcups.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcups.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/lib/libcups.dylib; sourceTree = DEVELOPER_DIR; };
+		BE42457D18C570AD00B527B9 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/lib/libz.dylib; sourceTree = DEVELOPER_DIR; };
+		BE42458018C63EB800B527B9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		BE42458618C63EE300B527B9 /* test-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "test-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE42458918C63EE300B527B9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BE42458C18C63EE300B527B9 /* test-cli-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "test-cli-Prefix.pch"; sourceTree = "<group>"; };
+		BE503D9718BF970200C84357 /* Printer_Validator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Printer_Validator.h; sourceTree = "<group>"; };
+		BECC149618BE7E300012B016 /* CUPSManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUPSManager.h; sourceTree = "<group>"; };
+		BECC149718BE7E300012B016 /* CUPSManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUPSManager.m; sourceTree = "<group>"; };
+		BECC14A718BEA0EA0012B016 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		BEE0A0AE18BF8912000AAB2B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		BEE7AE0218C4C79D00F61EFA /* Objective-CUPS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Objective-CUPS.h"; sourceTree = "<group>"; };
+		BEE7AE0718C53CEA00F61EFA /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utility.m; path = "Objective-CUPS/Utility.m"; sourceTree = SOURCE_ROOT; };
+		BEE7AE0818C53CEA00F61EFA /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utility.h; path = "Objective-CUPS/Utility.h"; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BE26D39118909E4F00DD31AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE26D3BB18909E6B00DD31AB /* Foundation.framework in Frameworks */,
+				BE26D3BA18909E6200DD31AB /* libz.dylib in Frameworks */,
+				BE26D3EF1890CC9B00DD31AB /* libcups.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE26D3C31890C83600DD31AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BEE0A0B018BF8D6A000AAB2B /* Foundation.framework in Frameworks */,
+				BE26D3F01890CCA300DD31AB /* libcups.dylib in Frameworks */,
+				BE26D3F11890CCA600DD31AB /* libz.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE26D3CF1890C83600DD31AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BECC14A418BE9AFD0012B016 /* libObjective_CUPS.a in Frameworks */,
+				BE26D3ED1890CC3900DD31AB /* libcups.dylib in Frameworks */,
+				BE26D3EE1890CC4A00DD31AB /* libz.dylib in Frameworks */,
+				BE26D3D41890C83600DD31AB /* Cocoa.framework in Frameworks */,
+				BE26D3D31890C83600DD31AB /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE42458318C63EE300B527B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE42459618C63F2100B527B9 /* libz.dylib in Frameworks */,
+				BE42459518C63F1A00B527B9 /* libcups.dylib in Frameworks */,
+				BE42459418C63F1200B527B9 /* libObjective_CUPS.a in Frameworks */,
+				BE42458718C63EE300B527B9 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BE26D29C188F163D00DD31AB = {
+			isa = PBXGroup;
+			children = (
+				BECC14A718BEA0EA0012B016 /* LICENSE */,
+				BEE0A0AE18BF8912000AAB2B /* README.md */,
+				BE26D32F188F1A7F00DD31AB /* Objective-CUPS */,
+				BE26D3D81890C83600DD31AB /* Objective_CUPSTests */,
+				BE42458818C63EE300B527B9 /* test-cli */,
+				BE26D2A7188F163D00DD31AB /* Frameworks */,
+				BE26D2A6188F163D00DD31AB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BE26D2A6188F163D00DD31AB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BE26D39518909E4F00DD31AB /* Objective-CUPS.framework */,
+				BE26D3C61890C83600DD31AB /* libObjective_CUPS.a */,
+				BE26D3D21890C83600DD31AB /* Objective_CUPSTests.xctest */,
+				BE42458618C63EE300B527B9 /* test-cli */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BE26D2A7188F163D00DD31AB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BE42458018C63EB800B527B9 /* Foundation.framework */,
+				BE42457D18C570AD00B527B9 /* libz.dylib */,
+				BE42457B18C570A700B527B9 /* libcups.dylib */,
+				BE26D3EC1890CC3900DD31AB /* libcups.dylib */,
+				BE26D3801890685900DD31AB /* libz.dylib */,
+				BE26D37E1890681300DD31AB /* Foundation.framework */,
+				BE26D2A8188F163D00DD31AB /* Cocoa.framework */,
+				BE26D2B9188F163D00DD31AB /* XCTest.framework */,
+				BE26D368188F7D0A00DD31AB /* Foundation.framework */,
+				BE26D2AA188F163D00DD31AB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BE26D2AA188F163D00DD31AB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BE26D2AB188F163D00DD31AB /* Foundation.framework */,
+				BE26D2AC188F163D00DD31AB /* CoreData.framework */,
+				BE26D2AD188F163D00DD31AB /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		BE26D32F188F1A7F00DD31AB /* Objective-CUPS */ = {
+			isa = PBXGroup;
+			children = (
+				BEE7AE0118C4C76E00F61EFA /* PrivateHeaders */,
+				BEE7AE0318C4C7A600F61EFA /* PublicHeaders */,
+				BECC149718BE7E300012B016 /* CUPSManager.m */,
+				BE26D2D2188F168300DD31AB /* Printer.m */,
+				BE26D2D0188F168300DD31AB /* PrintJob.m */,
+				BE26D2D4188F168300DD31AB /* PrinterError.m */,
+				BE26D330188F1A7F00DD31AB /* Supporting Files */,
+			);
+			path = "Objective-CUPS";
+			sourceTree = "<group>";
+		};
+		BE26D330188F1A7F00DD31AB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BEE7AE0818C53CEA00F61EFA /* Utility.h */,
+				BEE7AE0718C53CEA00F61EFA /* Utility.m */,
+				BE26D3CA1890C83600DD31AB /* Objective-CUPS-Info.plist */,
+				BE26D331188F1A7F00DD31AB /* Objective-CUPS-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BE26D3D81890C83600DD31AB /* Objective_CUPSTests */ = {
+			isa = PBXGroup;
+			children = (
+				BE26D3DE1890C83700DD31AB /* Objective_CUPSTests.m */,
+				BE26D3D91890C83600DD31AB /* Supporting Files */,
+			);
+			path = Objective_CUPSTests;
+			sourceTree = "<group>";
+		};
+		BE26D3D91890C83600DD31AB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BE26D3DA1890C83600DD31AB /* Objective_CUPSTests-Info.plist */,
+				BE26D3DB1890C83600DD31AB /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BE42458818C63EE300B527B9 /* test-cli */ = {
+			isa = PBXGroup;
+			children = (
+				BE42458918C63EE300B527B9 /* main.m */,
+				BE42458B18C63EE300B527B9 /* Supporting Files */,
+			);
+			path = "test-cli";
+			sourceTree = "<group>";
+		};
+		BE42458B18C63EE300B527B9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BE42458C18C63EE300B527B9 /* test-cli-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BEE7AE0118C4C76E00F61EFA /* PrivateHeaders */ = {
+			isa = PBXGroup;
+			children = (
+				BE503D9718BF970200C84357 /* Printer_Validator.h */,
+				BE26D2D3188F168300DD31AB /* PrinterError.h */,
+			);
+			name = PrivateHeaders;
+			sourceTree = "<group>";
+		};
+		BEE7AE0318C4C7A600F61EFA /* PublicHeaders */ = {
+			isa = PBXGroup;
+			children = (
+				BECC149618BE7E300012B016 /* CUPSManager.h */,
+				BEE7AE0218C4C79D00F61EFA /* Objective-CUPS.h */,
+				BE26D2D1188F168300DD31AB /* Printer.h */,
+				BE26D2CF188F168300DD31AB /* PrintJob.h */,
+			);
+			name = PublicHeaders;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		BE26D39218909E4F00DD31AB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BEE7AE0618C4C7E700F61EFA /* Objective-CUPS.h in Headers */,
+				BEE7AE0B18C53CEA00F61EFA /* Utility.h in Headers */,
+				BECC149818BE7E300012B016 /* CUPSManager.h in Headers */,
+				BE26D3C018909E9D00DD31AB /* PrintJob.h in Headers */,
+				BE26D3BF18909E9800DD31AB /* Printer.h in Headers */,
+				BECC149E18BE95FE0012B016 /* PrinterError.h in Headers */,
+				BEE7AE0418C4C7D400F61EFA /* Printer_Validator.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE26D3C41890C83600DD31AB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BEE7AE0518C4C7E200F61EFA /* Objective-CUPS.h in Headers */,
+				BEE7AE0C18C53CEA00F61EFA /* Utility.h in Headers */,
+				BECC149C18BE95D80012B016 /* CUPSManager.h in Headers */,
+				BE26D3EA1890C8FE00DD31AB /* PrintJob.h in Headers */,
+				BE26D3E91890C8FB00DD31AB /* Printer.h in Headers */,
+				BE26D3EB1890C90100DD31AB /* PrinterError.h in Headers */,
+				BE32CE1618C18A3E00DEE757 /* Printer_Validator.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		BE26D39418909E4F00DD31AB /* Objective-CUPS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE26D3B718909E5000DD31AB /* Build configuration list for PBXNativeTarget "Objective-CUPS" */;
+			buildPhases = (
+				BE26D39018909E4F00DD31AB /* Sources */,
+				BE26D39118909E4F00DD31AB /* Frameworks */,
+				BE26D39218909E4F00DD31AB /* Headers */,
+				BE26D39318909E4F00DD31AB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Objective-CUPS";
+			productName = "Objective-CUPS";
+			productReference = BE26D39518909E4F00DD31AB /* Objective-CUPS.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		BE26D3C51890C83600DD31AB /* Objective_CUPS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE26D3E01890C83700DD31AB /* Build configuration list for PBXNativeTarget "Objective_CUPS" */;
+			buildPhases = (
+				BE26D3C21890C83600DD31AB /* Sources */,
+				BE26D3C31890C83600DD31AB /* Frameworks */,
+				BE26D3C41890C83600DD31AB /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Objective_CUPS;
+			productName = Objective_CUPS;
+			productReference = BE26D3C61890C83600DD31AB /* libObjective_CUPS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		BE26D3D11890C83600DD31AB /* Objective_CUPSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE26D3E31890C83700DD31AB /* Build configuration list for PBXNativeTarget "Objective_CUPSTests" */;
+			buildPhases = (
+				BE26D3CE1890C83600DD31AB /* Sources */,
+				BE26D3CF1890C83600DD31AB /* Frameworks */,
+				BE26D3D01890C83600DD31AB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BE49049518C0E1F700DEBED1 /* PBXTargetDependency */,
+				BECC14A618BE9B040012B016 /* PBXTargetDependency */,
+			);
+			name = Objective_CUPSTests;
+			productName = Objective_CUPSTests;
+			productReference = BE26D3D21890C83600DD31AB /* Objective_CUPSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		BE42458518C63EE300B527B9 /* test-cli */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE42458F18C63EE300B527B9 /* Build configuration list for PBXNativeTarget "test-cli" */;
+			buildPhases = (
+				BE42458218C63EE300B527B9 /* Sources */,
+				BE42458318C63EE300B527B9 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BE42459318C63F0900B527B9 /* PBXTargetDependency */,
+			);
+			name = "test-cli";
+			productName = "test-cli";
+			productReference = BE42458618C63EE300B527B9 /* test-cli */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BE26D29D188F163D00DD31AB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Loyola University New Orleans";
+				TargetAttributes = {
+					BE26D3D11890C83600DD31AB = {
+						TestTargetID = BE26D39418909E4F00DD31AB;
+					};
+				};
+			};
+			buildConfigurationList = BE26D2A0188F163D00DD31AB /* Build configuration list for PBXProject "Objective-CUPS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BE26D29C188F163D00DD31AB;
+			productRefGroup = BE26D2A6188F163D00DD31AB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BE26D39418909E4F00DD31AB /* Objective-CUPS */,
+				BE26D3C51890C83600DD31AB /* Objective_CUPS */,
+				BE26D3D11890C83600DD31AB /* Objective_CUPSTests */,
+				BE42458518C63EE300B527B9 /* test-cli */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BE26D39318909E4F00DD31AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BECC14A818BEA0EA0012B016 /* LICENSE in Resources */,
+				BEE0A0AF18BF8D47000AAB2B /* README.md in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE26D3D01890C83600DD31AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE26D3DD1890C83600DD31AB /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BE26D39018909E4F00DD31AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BECC149918BE7E300012B016 /* CUPSManager.m in Sources */,
+				BE26D3BC18909E7D00DD31AB /* Printer.m in Sources */,
+				BE26D3BD18909E8700DD31AB /* PrintJob.m in Sources */,
+				BE26D3BE18909E8900DD31AB /* PrinterError.m in Sources */,
+				BEE7AE0918C53CEA00F61EFA /* Utility.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE26D3C21890C83600DD31AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE503D9618BF966300C84357 /* CUPSManager.m in Sources */,
+				BE26D3E61890C8E000DD31AB /* Printer.m in Sources */,
+				BE26D3E71890C8E200DD31AB /* PrintJob.m in Sources */,
+				BE26D3E81890C8E800DD31AB /* PrinterError.m in Sources */,
+				BEE7AE0A18C53CEA00F61EFA /* Utility.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE26D3CE1890C83600DD31AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE26D3DF1890C83700DD31AB /* Objective_CUPSTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE42458218C63EE300B527B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE42458A18C63EE300B527B9 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BE42459318C63F0900B527B9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE26D3C51890C83600DD31AB /* Objective_CUPS */;
+			targetProxy = BE42459218C63F0900B527B9 /* PBXContainerItemProxy */;
+		};
+		BE49049518C0E1F700DEBED1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE26D39418909E4F00DD31AB /* Objective-CUPS */;
+			targetProxy = BE49049418C0E1F700DEBED1 /* PBXContainerItemProxy */;
+		};
+		BECC14A618BE9B040012B016 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE26D3C51890C83600DD31AB /* Objective_CUPS */;
+			targetProxy = BECC14A518BE9B040012B016 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		BE26D3DB1890C83600DD31AB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BE26D3DC1890C83600DD31AB /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BE26D2C7188F163D00DD31AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.8;
+			};
+			name = Debug;
+		};
+		BE26D2C8188F163D00DD31AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx10.8;
+			};
+			name = Release;
+		};
+		BE26D3B318909E5000DD31AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Objective-CUPS/Objective-CUPS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Objective-CUPS/Objective-CUPS-Info.plist";
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.8;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		BE26D3B418909E5000DD31AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Objective-CUPS/Objective-CUPS-Prefix.pch";
+				INFOPLIST_FILE = "Objective-CUPS/Objective-CUPS-Info.plist";
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.8;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		BE26D3E11890C83700DD31AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Objective-CUPS/Objective-CUPS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INSTALL_PATH = /usr/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = NO;
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		BE26D3E21890C83700DD31AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Objective-CUPS/Objective-CUPS-Prefix.pch";
+				INSTALL_PATH = /usr/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = NO;
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		BE26D3E41890C83700DD31AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Objective-CUPS.framework/Versions/A/Objective-CUPS";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Objective-CUPS/Objective-CUPS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Objective_CUPSTests/Objective_CUPSTests-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.8;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		BE26D3E51890C83700DD31AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Objective-CUPS.framework/Versions/A/Objective-CUPS";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Objective-CUPS/Objective-CUPS-Prefix.pch";
+				INFOPLIST_FILE = "Objective_CUPSTests/Objective_CUPSTests-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.8;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		BE42459018C63EE300B527B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "test-cli/test-cli-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		BE42459118C63EE400B527B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "test-cli/test-cli-Prefix.pch";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BE26D2A0188F163D00DD31AB /* Build configuration list for PBXProject "Objective-CUPS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE26D2C7188F163D00DD31AB /* Debug */,
+				BE26D2C8188F163D00DD31AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE26D3B718909E5000DD31AB /* Build configuration list for PBXNativeTarget "Objective-CUPS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE26D3B318909E5000DD31AB /* Debug */,
+				BE26D3B418909E5000DD31AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE26D3E01890C83700DD31AB /* Build configuration list for PBXNativeTarget "Objective_CUPS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE26D3E11890C83700DD31AB /* Debug */,
+				BE26D3E21890C83700DD31AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE26D3E31890C83700DD31AB /* Build configuration list for PBXNativeTarget "Objective_CUPSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE26D3E41890C83700DD31AB /* Debug */,
+				BE26D3E51890C83700DD31AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE42458F18C63EE300B527B9 /* Build configuration list for PBXNativeTarget "test-cli" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE42459018C63EE300B527B9 /* Debug */,
+				BE42459118C63EE400B527B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BE26D29D188F163D00DD31AB /* Project object */;
+}
