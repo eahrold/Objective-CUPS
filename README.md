@@ -24,11 +24,7 @@ CUPSManager *manager = [CUPSManager new]
 
 // and many more...
 ```
-<<<<<<< HEAD
 
 see [cupsmanger.h] for more info
 
-
 [cupsmanger.h]:./Objective-CUPS/CUPSManager.h
-=======
->>>>>>> 451f77187ba034002a91f36c6aab85414c221bf1
