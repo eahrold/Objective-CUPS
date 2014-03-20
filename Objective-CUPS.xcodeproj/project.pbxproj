@@ -317,9 +317,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEE7AE0518C4C7E200F61EFA /* Objective-CUPS.h in Headers */,
-				BEE7AE0C18C53CEA00F61EFA /* Utility.h in Headers */,
 				BECC149C18BE95D80012B016 /* CUPSManager.h in Headers */,
 				BE26D3EA1890C8FE00DD31AB /* PrintJob.h in Headers */,
+				BEE7AE0C18C53CEA00F61EFA /* Utility.h in Headers */,
 				BE26D3E91890C8FB00DD31AB /* Printer.h in Headers */,
 				BE26D3EB1890C90100DD31AB /* PrinterError.h in Headers */,
 				BE32CE1618C18A3E00DEE757 /* Printer_Validator.h in Headers */,
@@ -646,12 +646,12 @@
 					"$(inherited)",
 				);
 				INSTALL_PATH = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = NO;
 				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 			};
 			name = Debug;
 		};
@@ -661,12 +661,12 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Objective-CUPS/Objective-CUPS-Prefix.pch";
 				INSTALL_PATH = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = NO;
 				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 			};
 			name = Release;
 		};
@@ -725,7 +725,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 			};
 			name = Debug;
 		};
@@ -736,7 +736,7 @@
 				GCC_PREFIX_HEADER = "test-cli/test-cli-Prefix.pch";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 			};
 			name = Release;
 		};
@@ -786,6 +786,7 @@
 				BE42459118C63EE400B527B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

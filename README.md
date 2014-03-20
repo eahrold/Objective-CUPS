@@ -25,6 +25,17 @@ CUPSManager *manager = [CUPSManager new]
 // and many more...
 ```
 
+
+####Print file
+Print file and monitor via Block...
+``` Objective-c
+[_manager sendFile:@"/tmp/test.txt" toPrinter:_printer.name failure:^(NSError *error) {
+    NSLog(@"%@",error.localizedDescription);
+} watch:^(NSString *status, NSInteger jobID) {
+    NSLog(@"%@",status);
+}];
+```
+
 see [cupsmanger.h] for more info
 
 [cupsmanger.h]:./Objective-CUPS/CUPSManager.h
