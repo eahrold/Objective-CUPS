@@ -172,4 +172,14 @@
  @return NSSet of installed printers
  */
 +(NSArray *)optionsForModel:(NSString*)model;
+
+/**
+ *  get an array of ppds for the given model
+ *
+ *  @param model model name
+ *
+ *  @return array with avaliable ppds for the particular model
+ */
++(NSArray *)ppdsForModel:(NSString *)model;
+
 @end

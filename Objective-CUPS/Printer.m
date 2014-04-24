@@ -323,9 +323,13 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
                     continue;
             }
             
-            _ppd = [NSString stringWithFormat:@"/%s",ppd_name];
-            if([[NSFileManager defaultManager]fileExistsAtPath:_ppd]){
-                return YES;
+            NSString* localPPDfile = [NSString stringWithFormat:@"/%s",ppd_name];
+            if([[NSFileManager defaultManager]fileExistsAtPath:localPPDfile]){
+                NSString *tmpPPDFileName = [NSString stringWithFormat:@"%@/%@.gz",NSTemporaryDirectory(),_name];
+                if([[NSFileManager defaultManager]copyItemAtPath:localPPDfile toPath:tmpPPDFileName error:nil]){
+                    _ppd = tmpPPDFileName;
+                    return YES;
+                }
             }
             
             if (attr == NULL)
