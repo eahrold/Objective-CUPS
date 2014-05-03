@@ -94,6 +94,12 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
     return self;
 }
 
+-(void)dealloc{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if([fm fileExistsAtPath:self.ppd_tempfile])
+        [fm removeItemAtPath:self.ppd_tempfile error:nil];
+}
+
 #pragma mark - Accessors
 -(NSString*)url{
     if(_url){
@@ -252,7 +258,7 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
     return [PrinterError errorWithCode:kPrinterErrorPPDNotFound error:error];
 }
 
--(BOOL)downloadPPD:(NSURL*)URL mode:(int)mode{
+-(BOOL)downloadPPD:(NSURL*)URL mode:(ppdDownloadModes)mode{
     if(!URL){
         return NO;
     }
@@ -275,18 +281,17 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
                                          returningResponse:&response
                                                      error:&error];
     
+    NSFileManager *fm = [NSFileManager defaultManager];
     if([response statusCode] >= 400 || !data ){
-        [[NSFileManager defaultManager] removeItemAtPath:self.ppd_tempfile error:nil];
+        [fm removeItemAtPath:self.ppd_tempfile error:nil];
         return NO;
     }else{
         NSString *downloadedPPD = [self.ppd_tempfile stringByAppendingString:@".gz"];
-        if([[NSFileManager defaultManager] createFileAtPath:downloadedPPD contents:data attributes:nil]){
+        if([fm createFileAtPath:downloadedPPD contents:data attributes:nil]){
             if(mode == PPD_FROM_CUPS_SERVER){
-                return YES;
+                return [fm moveItemAtPath:downloadedPPD toPath:self.ppd_tempfile error:&error];
             }else{
-                if([self unzipPPD:downloadedPPD to:self.ppd_tempfile error:&error]){
-                    return YES;
-                }
+                return [self unzipPPD:downloadedPPD to:self.ppd_tempfile error:&error];
             }
         }
     }
