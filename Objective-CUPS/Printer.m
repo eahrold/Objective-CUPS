@@ -26,8 +26,10 @@
 
 
 #import "Printer.h"
+#import "Printer_Private.h"
 #import "PrintJob.h"
 #import "PrinterError.h"
+#import "CUPSManager.h"
 #import <cups/cups.h>
 #import <cups/ppd.h>
 #import <zlib.h>
@@ -37,9 +39,6 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
     PPD_FROM_URL = 0,
     PPD_FROM_CUPS_SERVER = 1,
 };
-
-@interface Printer ()<NSSecureCoding>
-@end
 
 @implementation Printer
 
@@ -131,7 +130,22 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
         NSLog(@"Improper URL Format");
         return NO;
     }
-    return _url;
+    return [_url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+}
+
+-(NSString *)host{
+    return [_host stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+}
+
+-(NSString *)ppd{
+    if(_ppd)
+        return _ppd;
+    else
+        return [[CUPSManager ppdsForModel:_model] lastObject];
+}
+
+-(NSString *)ppd_tempfile{
+    return [NSTemporaryDirectory() stringByAppendingPathComponent:_name];
 }
 
 -(NSArray*)jobs{
@@ -184,27 +198,40 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
 }
 
 -(NSArray *)avaliableOptions{
+    NSArray *opts = nil;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSString *file = [NSString stringWithUTF8String:cupsGetPPD(_name.UTF8String)];
 #pragma clang diagnostic pop
-    if (!file)
+    if (file)
     {
-        [PrinterError cupsError:nil];
-        return nil;
+        opts =  [self optionsForPPD:file];
+        unlink(file.UTF8String);
     }
-    return [self optionsForPPD:file];
+   
+    return opts;
 }
 
-#pragma mark - Utility
+#pragma mark - Private
 
 -(BOOL)configurePPD:(NSError*__autoreleasing*)error{
     NSString* path;
     
     // Check if we can find a match locally...
-    if([self localPPD]){
-        return YES;
+    NSString *localPPD = self.ppd;
+    if(localPPD){
+        NSFileManager *fm = [NSFileManager defaultManager];
+        if([fm fileExistsAtPath:localPPD]){
+            // If the file exists remove it so we can get a new one.
+            if([fm fileExistsAtPath:self.ppd_tempfile])
+                [fm removeItemAtPath:self.ppd_tempfile error:nil];
+            
+            if([fm copyItemAtPath:localPPD toPath:self.ppd_tempfile error:nil]){
+                return YES;
+            }
+        }
     }
+    
     
     // if not local, try and get if from the printer-installer-server
     if(_ppd_url){
@@ -248,99 +275,20 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
                                          returningResponse:&response
                                                      error:&error];
     
-    NSString* downloadedPPD = [NSTemporaryDirectory() stringByAppendingPathComponent:[_name stringByAppendingPathExtension:@"gz"]];
-    
     if([response statusCode] >= 400 || !data ){
-        _ppd = nil;
-       return NO;
+        [[NSFileManager defaultManager] removeItemAtPath:self.ppd_tempfile error:nil];
+        return NO;
     }else{
+        NSString *downloadedPPD = [self.ppd_tempfile stringByAppendingString:@".gz"];
         if([[NSFileManager defaultManager] createFileAtPath:downloadedPPD contents:data attributes:nil]){
             if(mode == PPD_FROM_CUPS_SERVER){
-                _ppd = downloadedPPD;
                 return YES;
             }else{
-                NSString* unzippedPPD = [downloadedPPD stringByDeletingPathExtension];
-                if([self unzipPPD:downloadedPPD to:unzippedPPD error:&error]){
-                    _ppd = unzippedPPD;
+                if([self unzipPPD:downloadedPPD to:self.ppd_tempfile error:&error]){
                     return YES;
                 }
             }
         }
-    }
-    return NO;
-}
-
-
--(BOOL)localPPD{
-    ipp_t	*ppd_request,
-    *response;
-    
-    ipp_attribute_t *attr;
-    const char      *ppd_name;
-    
-    ppd_request = ippNewRequest(CUPS_GET_PPDS);
-    
-    if (_model){
-        ippAddString(ppd_request, IPP_TAG_OPERATION, IPP_TAG_TEXT, "ppd-product",
-                     NULL, _model.UTF8String);
-    }else{
-        return NO;
-    }
-
-    if ((response = cupsDoRequest(CUPS_HTTP_DEFAULT, ppd_request, "/")) != NULL)
-    {
-        if (ippGetStatusCode(response) > IPP_OK_CONFLICT)
-        {
-            ippDelete(response);
-            return NO;
-        }
-        
-        for (attr = ippFirstAttribute(response); attr != NULL; attr = ippNextAttribute(response))
-        {
-            while (attr != NULL && ippGetGroupTag(attr) != IPP_TAG_PRINTER)
-                attr = ippNextAttribute(response);
-            
-            if (attr == NULL)
-                break;
-            
-            ppd_name = NULL;
-            
-            while (attr != NULL && ippGetGroupTag(attr) == IPP_TAG_PRINTER)
-            {
-                if (!strcmp(ippGetName(attr), "ppd-name") &&
-                    ippGetValueTag(attr) == IPP_TAG_NAME)
-                    ppd_name = ippGetString(attr, 0, NULL);
-                
-                attr = ippNextAttribute(response);
-            }
-            
-            
-            if (ppd_name == NULL)
-            {
-                if (attr == NULL)
-                    break;
-                else
-                    continue;
-            }
-            
-            NSString* localPPDfile = [NSString stringWithFormat:@"/%s",ppd_name];
-            if([[NSFileManager defaultManager]fileExistsAtPath:localPPDfile]){
-                NSString *tmpPPDFileName = [NSString stringWithFormat:@"%@/%@.gz",NSTemporaryDirectory(),_name];
-                if([[NSFileManager defaultManager]copyItemAtPath:localPPDfile toPath:tmpPPDFileName error:nil]){
-                    _ppd = tmpPPDFileName;
-                    return YES;
-                }
-            }
-            
-            if (attr == NULL)
-                break;
-        }
-        
-        ippDelete(response);
-    }
-    else
-    {
-        NSLog(@"Error Retreving PPD: %s", cupsLastErrorString());
     }
     return NO;
 }
@@ -417,7 +365,6 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     if ((ppd = ppdOpenFile(file.UTF8String)) == NULL)
     {
-        unlink(file.UTF8String);
         return nil;
     }
     
@@ -446,8 +393,6 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
     }
     ppdClose(ppd);
 #pragma clang diagnostic pop
-    unlink(file.UTF8String);
-    
     return array;
 }
 

@@ -51,6 +51,9 @@
 /** model name matching a result from lpinfo -m (end of each line)*/
 @property (copy,nonatomic) NSString *model;
 
+/**path to raw ppd file either .gz or .ppd */
+@property (copy, nonatomic) NSString *ppd;
+
 /** path where a PPD file can be download*/
 @property (copy,nonatomic) NSString *ppd_url;
 
@@ -60,19 +63,18 @@
 
 /** Array of options that can get applied to the printer 
 based on the model*/
-@property (copy,nonatomic) NSArray  *avaliableOptions;
+@property (weak,nonatomic,readonly) NSArray  *avaliableOptions;
 
 /**current numeric state of printer */
-@property (nonatomic)       OSStatus status;
+@property (nonatomic,readonly)       OSStatus status;
 
 /**current textual state of printer */
-@property (copy, nonatomic) NSString *statusMessage;
+@property (weak, nonatomic,readonly) NSString *statusMessage;
 
 /**currently printing jobs */
-@property (nonatomic)       NSArray *jobs;
+@property (weak,nonatomic,readonly)       NSArray *jobs;
 
-/**path to raw ppd file either .gz or .ppd */
-@property (copy, nonatomic) NSString *ppd;
+
 
 /**full uri for cups dest*/
 @property (copy, nonatomic) NSString *url;

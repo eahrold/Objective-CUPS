@@ -67,8 +67,12 @@
 
 -(void)testAddPrinter{
     NSError *error;
-    _printer.options = @[@"HPOption_Tray4=Tray4_500"];
+    _printer.options = @[@"HPOption_Tray4=Tray4_500",@"HPOption_Tray3=True"];
     XCTAssertTrue([_manager addPrinter:_printer error:&error], @"Add Printer Error: %@",error);
+}
+
+-(void)testAvaliableOptions{
+    NSLog(@"%@",[_printer avaliableOptions]);
 }
 
 -(void)testAddOption{
@@ -107,6 +111,11 @@
     NSLog(@"%@",arr);
 }
 
+-(void)testInstalledPrinters{
+    for (Printer *p in [CUPSManager installedPrinters]){
+        NSLog(@"ppd for printer %@ : %@",p.name,p.ppd);
+    }
+}
 -(void)testPrintJobAndWatch{
     [_manager sendFile:@"/tmp/test.txt" toPrinter:_printer.name failure:^(NSError *error) {
         XCTAssertNil(error, @"Problem Printing: %@",error.localizedDescription);
@@ -134,7 +143,7 @@
         _printer.host  = @"masscomm.loyno.edu";
         _printer.protocol = @"ipp";
         _printer.description = @"LaserJet";
-        _printer.model = @"HP LaserJet 4250";
+        _printer.model = @"HP Color LaserJet CP5220 Series with Duplexer";
     }
 }
 

@@ -6,12 +6,11 @@
 //  Copyright (c) 2014 Loyola University New Orleans. All rights reserved.
 //
 
-#import "Utility.h"
+#import "PrinterUtility.h"
 #import "PrinterError.h"
 #import <cups/ppd.h>
 
 const char * writeOptionsToPPD(cups_option_t *options,int num_options,const char * file, NSError *__autoreleasing* error){
-    int             ppdchanged;
     
     const char      *customval,     /* Custom option value */
                     *returnPPD;
@@ -28,8 +27,10 @@ const char * writeOptionsToPPD(cups_option_t *options,int num_options,const char
                     keyword[1024],  /* Keyword from Default line */
                     *keyptr;		/* Pointer into keyword... */
     
-    ppdchanged = 0;
+    BOOL            ppdchanged;
     
+    ppdchanged = NO;  // this is read after push/pop so shows as never read with xcode
+    if(ppdchanged){};
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     
@@ -59,7 +60,7 @@ const char * writeOptionsToPPD(cups_option_t *options,int num_options,const char
             return NULL;
         }
         
-        ppdchanged = 0;
+        ppdchanged = YES;
         
         while (cupsFileGets(inppd, line, sizeof(line)))
         {
@@ -77,13 +78,13 @@ const char * writeOptionsToPPD(cups_option_t *options,int num_options,const char
                 while (isspace(*keyptr & 255))
                     keyptr ++;
                 
-                if (!strcmp(keyword, "PageRegion") ||
-                    !strcmp(keyword, "PageSize") ||
+                if (!strcmp(keyword, "PageRegion")     ||
+                    !strcmp(keyword, "PageSize")       ||
                     !strcmp(keyword, "PaperDimension") ||
                     !strcmp(keyword, "ImageableArea"))
                 {
                     if ((choice = ppdFindMarkedChoice(ppdfile, "PageSize")) == NULL)
-                        choice = ppdFindMarkedChoice(ppdfile, "PageRegion");
+                         choice = ppdFindMarkedChoice(ppdfile, "PageRegion");
                 }
                 else
                     choice = ppdFindMarkedChoice(ppdfile, keyword);
@@ -93,13 +94,13 @@ const char * writeOptionsToPPD(cups_option_t *options,int num_options,const char
                     if (strcmp(choice->choice, "Custom"))
                     {
                         cupsFilePrintf(outppd, "*Default%s: %s\n", keyword, choice->choice);
-                        ppdchanged = 1;
+                        ppdchanged = YES;
                     }
                     else if ((customval = cupsGetOption(keyword, num_options,
                                                         options)) != NULL)
                     {
                         cupsFilePrintf(outppd, "*Default%s: %s\n", keyword, customval);
-                        ppdchanged = 1;
+                        ppdchanged = YES;
                     }
                     else
                         cupsFilePrintf(outppd, "%s\n", line);
@@ -113,7 +114,7 @@ const char * writeOptionsToPPD(cups_option_t *options,int num_options,const char
         ppdClose(ppdfile);
     }
 #pragma clang diagnostic pop
-    returnPPD =  ppdchanged ? tempfile:file;
+    returnPPD =  ppdchanged ? [[NSString stringWithUTF8String:tempfile] UTF8String]:file;
     if(!ppdchanged){
         unlink(tempfile);
     }

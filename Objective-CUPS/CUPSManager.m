@@ -26,10 +26,11 @@
 
 #import "CUPSManager.h"
 #import "Printer.h"
+#import "Printer_Private.h"
 #import "PrintJob.h"
 #import "PrinterError.h"
 #import "Printer_Validator.h"
-#import "Utility.h"
+#import "PrinterUtility.h"
 #import <cups/cups.h>
 #import <cups/ppd.h>
 #import <zlib.h>
@@ -110,7 +111,7 @@
     cupsEncodeOptions2(request, num_options, options, IPP_TAG_OPERATION);
     cupsEncodeOptions2(request, num_options, options, IPP_TAG_PRINTER);
 
-    if((finalppd = writeOptionsToPPD(options, num_options, printer.ppd.UTF8String, error)) == NULL){
+    if((finalppd = writeOptionsToPPD(options, num_options, printer.ppd_tempfile.UTF8String, error)) == NULL){
         return NO;
     }
     
@@ -380,9 +381,8 @@
     const char      *ppd_name;  /* Filte path to the PPD*/
     
     request = ippNewRequest(CUPS_GET_PPDS);
-    
     if (model){
-        ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_TEXT, "ppd-product",
+        ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_TEXT, "ppd-make-and-model",
                      NULL, model.UTF8String);
     }else{
         return nil;
@@ -577,6 +577,10 @@
                 p.protocol = url.scheme;
                 p.host     = url.host;
             }
+            if(uri != NULL){
+                //do something with uri
+            }
+            
             [set addObject:p];
             if (attr == NULL)
                 break;
