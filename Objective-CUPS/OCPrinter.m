@@ -40,6 +40,8 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
 };
 
 @implementation OCPrinter
+// Since this overrides the standard NSObject description property, manually synthesize it
+@synthesize description = _description;
 
 #pragma mark - Initializers / Secure Coding
 - (id)initWithCoder:(NSCoder *)aDecoder
