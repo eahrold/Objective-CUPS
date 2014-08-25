@@ -1,13 +1,13 @@
 //
-//  Utility.m
+//  OCPrinterUtility.h
 //  Objective-CUPS
 //
 //  Created by Eldon on 3/3/14.
 //  Copyright (c) 2014 Loyola University New Orleans. All rights reserved.
 //
 
-#import "PrinterUtility.h"
-#import "PrinterError.h"
+#import "OCPrinterUtility.h"
+#import "OCError.h"
 #import <cups/ppd.h>
 
 const char *writeOptionsToPPD(cups_option_t *options, int num_options, const char *file, NSError *__autoreleasing *error)
@@ -41,14 +41,14 @@ const char *writeOptionsToPPD(cups_option_t *options, int num_options, const cha
     // into the PPD file.
 
     if ((ppdfile = ppdOpenFile(file)) == NULL) {
-        [PrinterError errorWithCode:kPrinterErrorCantOpenPPD error:error];
+        [OCError errorWithCode:kPrinterErrorCantOpenPPD error:error];
         return NULL;
     } else {
         ppdMarkDefaults(ppdfile);
         cupsMarkOptions(ppdfile, num_options, options);
 
         if ((outppd = cupsTempFile2(tempfile, sizeof(tempfile))) == NULL) {
-            [PrinterError errorWithCode:kPrinterErrorCantWriteFile error:error];
+            [OCError errorWithCode:kPrinterErrorCantWriteFile error:error];
             cupsFileClose(outppd);
             unlink(tempfile);
             return NULL;
@@ -57,7 +57,7 @@ const char *writeOptionsToPPD(cups_option_t *options, int num_options, const cha
         if ((inppd = cupsFileOpen(file, "r")) == NULL) {
             cupsFileClose(outppd);
             unlink(tempfile);
-            [PrinterError errorWithCode:kPrinterErrorCantOpenPPD error:error];
+            [OCError errorWithCode:kPrinterErrorCantOpenPPD error:error];
             return NULL;
         }
 

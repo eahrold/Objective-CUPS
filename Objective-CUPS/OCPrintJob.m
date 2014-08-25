@@ -24,7 +24,7 @@
 //
 //
 #import "OCPrintJob.h"
-#import "PrinterError.h"
+#import "OCError.h"
 #import <cups/cups.h>
 
 @interface OCPrintJob () {
@@ -96,7 +96,7 @@
 #endif
 
     if (http == NULL)
-        return [PrinterError cupsError:error];
+        return [OCError cupsError:error];
 
     status = cupsCancelJob(_dest.UTF8String, (int)_jid);
 
@@ -108,7 +108,7 @@
     {
         return YES;
     }
-    return [PrinterError cupsError:error];
+    return [OCError cupsError:error];
 }
 
 - (void)addFiles:(NSArray *)files
@@ -133,9 +133,9 @@
 - (BOOL)submit:(NSError *__autoreleasing *)error
 {
     if (_submitted)
-        return [PrinterError errorWithCode:kPrintJobAlreaySubmitted error:error];
+        return [OCError errorWithCode:kPrintJobAlreaySubmitted error:error];
     else if (!_files)
-        return [PrinterError errorWithCode:kPrintJobNoFileSubmitted error:error];
+        return [OCError errorWithCode:kPrintJobNoFileSubmitted error:error];
 
     _submitted = YES;
     _name = [(NSString *)_files[0] lastPathComponent];
@@ -151,7 +151,7 @@
 
     _jid = cupsPrintFiles(_dest.UTF8String, i, files, _name.UTF8String, 0, NULL);
     if (_jid == 0) {
-        return [PrinterError cupsError:error];
+        return [OCError cupsError:error];
     }
 
     if (_jobMonitor) {

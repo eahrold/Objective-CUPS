@@ -28,9 +28,9 @@
 #import "OCPrinter.h"
 #import "OCPrinter_Private.h"
 #import "OCPrintJob.h"
-#import "PrinterError.h"
-#import "Printer_Validator.h"
-#import "PrinterUtility.h"
+#import "OCError.h"
+#import "OCPrinter_Validator.h"
+#import "OCPrinterUtility.h"
 #import <cups/cups.h>
 #import <cups/ppd.h>
 #import <zlib.h>
@@ -127,7 +127,7 @@
     unlink(finalppd);
 
     if (cupsLastError() > IPP_OK_CONFLICT) {
-        return [PrinterError cupsError:error];
+        return [OCError cupsError:error];
     }
     return YES;
 }
@@ -275,7 +275,7 @@
     ippDelete(cupsDoRequest(CUPS_HTTP_DEFAULT, request, "/admin/"));
 
     if (cupsLastError() > IPP_OK_CONFLICT) {
-        return [PrinterError cupsError:error];
+        return [OCError cupsError:error];
     }
 
     return YES;
@@ -296,7 +296,7 @@
             faults++;
     }
     if (faults > 0)
-        return [PrinterError errorWithCode:kPrinterErrorProblemCancelingJobs error:error];
+        return [OCError errorWithCode:kPrinterErrorProblemCancelingJobs error:error];
     return YES;
 }
 
@@ -336,7 +336,7 @@
     ippDelete(cupsDoRequest(CUPS_HTTP_DEFAULT, request, "/admin/"));
 
     if (cupsLastError() > IPP_OK_CONFLICT) {
-        [PrinterError cupsError:error];
+        [OCError cupsError:error];
         return NO;
     }
 
@@ -406,7 +406,7 @@
 
     if ((response = cupsDoRequest(CUPS_HTTP_DEFAULT, request, "/")) != NULL) {
         if (ippGetStatusCode(response) > IPP_OK_CONFLICT) {
-            [PrinterError cupsError:error];
+            [OCError cupsError:error];
             ippDelete(response);
             return nil;
         }

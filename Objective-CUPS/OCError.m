@@ -24,16 +24,16 @@
 //
 //
 
-#import "PrinterError.h"
+#import "OCError.h"
 #import <cups/cups.h>
 //  The Domain to user with error codes and Alert Panel
 NSString *const PrinterErrorDomain = @"com.eeaapps.objective-CUPS";
 
-@implementation PrinterError
+@implementation OCError
 
 + (BOOL)errorWithCode:(int)code error:(NSError *__autoreleasing *)error
 {
-    NSString *message = [PrinterError errorTextForCode:code];
+    NSString *message = [OCError errorTextForCode:code];
     [self errorWithCode:code message:message error:error];
     return NO;
 }

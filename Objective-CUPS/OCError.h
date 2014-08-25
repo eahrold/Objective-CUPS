@@ -1,5 +1,5 @@
 //
-//  PrinterError.h
+//  OCError.h
 //  Objective-CUPS
 //
 //  Copyright (c) 2014 Eldon Ahrold ( https://github.com/eahrold/Objective-CUPS )
@@ -27,7 +27,7 @@
 #import <Foundation/Foundation.h>
 extern NSString *const PIDomain;
 
-@interface PrinterError : NSError
+@interface OCError : NSError
 + (BOOL)cupsError:(NSError **)error;
 + (BOOL)charError:(const char *)message error:(NSError **)error;
 + (BOOL)errorWithCode:(int)code error:(NSError **)error;
@@ -37,7 +37,7 @@ extern NSString *const PIDomain;
 
 @end
 
-enum PrinterErrorCodes {
+enum OCPrinterErrorCodes {
     kPrinterErrorSuccess = 0,
     kPrinterErrorPPDNotFound = 0x1000,
     kPrinterErrorCantOpenPPD,
@@ -51,7 +51,7 @@ enum PrinterErrorCodes {
     kPrinterErrorServerNotFound,
 };
 
-enum PrintJobErrorCodes {
+enum OCPrintJobErrorCodes {
     kPrintJobSuccess = 0,
     kPrintJobAlreaySubmitted = 0x2000,
     kPrintJobNoFileSubmitted,

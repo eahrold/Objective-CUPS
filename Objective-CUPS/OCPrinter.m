@@ -27,7 +27,7 @@
 #import "OCPrinter.h"
 #import "OCPrinter_Private.h"
 #import "OCPrintJob.h"
-#import "PrinterError.h"
+#import "OCError.h"
 #import "CUPSManager.h"
 #import <cups/cups.h>
 #import <cups/ppd.h>
@@ -257,7 +257,7 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
         }
     }
     // if we still don't have it error out
-    return [PrinterError errorWithCode:kPrinterErrorPPDNotFound error:error];
+    return [OCError errorWithCode:kPrinterErrorPPDNotFound error:error];
 }
 
 - (BOOL)downloadPPD:(NSURL *)URL mode:(ppdDownloadModes)mode
@@ -322,7 +322,7 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
                 const char *error_string;
                 error_string = gzerror(file, &err);
                 if (err) {
-                    [PrinterError charError:error_string error:error];
+                    [OCError charError:error_string error:error];
                     return NO;
                 }
             }
@@ -341,7 +341,7 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
         if (*ptr == '@') {
             break;
         } else if ((*ptr >= 0 && *ptr <= ' ') || *ptr == 127 || *ptr == '/' || *ptr == '#') {
-            [PrinterError errorWithCode:kPrinterErrorBadCharactersInName error:error];
+            [OCError errorWithCode:kPrinterErrorBadCharactersInName error:error];
             return NO;
         }
     }
@@ -350,7 +350,7 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
      * All the characters are good; validate the length, too...
      */
     if ((ptr - name) > 127) {
-        [PrinterError errorWithCode:kPrinterErrorNameTooLong error:error];
+        [OCError errorWithCode:kPrinterErrorNameTooLong error:error];
         return NO;
     }
     return YES;
