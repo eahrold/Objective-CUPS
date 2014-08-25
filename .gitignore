@@ -1,2 +1,15 @@
-Objective-CUPS.xcodeproj/xcuserdata/eldon.xcuserdatad
-Objective-CUPS.xcodeproj/project.xcworkspace/xcuserdata/eldon.xcuserdatad
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+
+build/*
+*.pbxuser
+*.mode2v3
+*.mode1v3
+*.perspective
+*.perspectivev3
+*~.nib
+xcuserdata
+project.xcworkspace
