@@ -32,7 +32,7 @@
 @end
 
 @implementation Objective_CUPSTests {
-    CUPSManager *_manager;
+    OCManager *_manager;
     OCPrinter *_printer;
     OCPrintJob *_printjob;
     int i;
@@ -42,7 +42,7 @@
 {
     [super setUp];
     [self setUpPrinter];
-    _manager = [CUPSManager sharedManager];
+    _manager = [OCManager sharedManager];
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
@@ -114,13 +114,13 @@
 
 - (void)testOptionsForModel
 {
-    NSArray *arr = [CUPSManager optionsForModel:_printer.model];
+    NSArray *arr = [OCManager optionsForModel:_printer.model];
     NSLog(@"%@", arr);
 }
 
 - (void)testInstalledPrinters
 {
-    for (OCPrinter *p in [CUPSManager installedPrinters]) {
+    for (OCPrinter *p in [OCManager installedPrinters]) {
         NSLog(@"ppd for printer %@ : %@", p.name, p.ppd);
     }
 }

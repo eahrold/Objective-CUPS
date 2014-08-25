@@ -28,7 +28,7 @@
 #import "OCPrinter_Private.h"
 #import "OCPrintJob.h"
 #import "OCError.h"
-#import "CUPSManager.h"
+#import "OCManager.h"
 #import <cups/cups.h>
 #import <cups/ppd.h>
 #import <zlib.h>
@@ -146,7 +146,7 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
     if (_ppd)
         return _ppd;
     else
-        return [[CUPSManager ppdsForModel:_model] lastObject];
+        return [[OCManager ppdsForModel:_model] lastObject];
 }
 
 - (NSString *)ppd_tempfile

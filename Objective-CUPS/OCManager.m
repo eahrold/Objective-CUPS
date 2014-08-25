@@ -24,7 +24,7 @@
 //
 //
 
-#import "CUPSManager.h"
+#import "OCManager.h"
 #import "OCPrinter.h"
 #import "OCPrinter_Private.h"
 #import "OCPrintJob.h"
@@ -36,11 +36,11 @@
 #import <zlib.h>
 #import <syslog.h>
 
-@interface CUPSManager () <PrintJobMonitor>
+@interface OCManager () <PrintJobMonitor>
 @property (weak, nonatomic, readwrite) void (^jobStatus)(NSString *status, NSInteger jobID);
 @end
 
-@implementation CUPSManager {
+@implementation OCManager {
 }
 
 - (void)dealloc
@@ -55,12 +55,12 @@
     }
 }
 
-+ (CUPSManager *)sharedManager
++ (OCManager *)sharedManager
 {
     static dispatch_once_t onceToken;
-    static CUPSManager *shared;
+    static OCManager *shared;
     dispatch_once(&onceToken, ^{
-        shared = [CUPSManager new];
+        shared = [OCManager new];
     });
     return shared;
 }

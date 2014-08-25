@@ -35,10 +35,10 @@
 		BE42459418C63F1200B527B9 /* libObjective_CUPS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3C61890C83600DD31AB /* libObjective_CUPS.a */; };
 		BE42459518C63F1A00B527B9 /* libcups.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE42457B18C570A700B527B9 /* libcups.dylib */; };
 		BE42459618C63F2100B527B9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE42457D18C570AD00B527B9 /* libz.dylib */; };
-		BE503D9618BF966300C84357 /* CUPSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BECC149718BE7E300012B016 /* CUPSManager.m */; };
-		BECC149818BE7E300012B016 /* CUPSManager.h in Headers */ = {isa = PBXBuildFile; fileRef = BECC149618BE7E300012B016 /* CUPSManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BECC149918BE7E300012B016 /* CUPSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BECC149718BE7E300012B016 /* CUPSManager.m */; };
-		BECC149C18BE95D80012B016 /* CUPSManager.h in Headers */ = {isa = PBXBuildFile; fileRef = BECC149618BE7E300012B016 /* CUPSManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE503D9618BF966300C84357 /* OCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BECC149718BE7E300012B016 /* OCManager.m */; };
+		BECC149818BE7E300012B016 /* OCManager.h in Headers */ = {isa = PBXBuildFile; fileRef = BECC149618BE7E300012B016 /* OCManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BECC149918BE7E300012B016 /* OCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BECC149718BE7E300012B016 /* OCManager.m */; };
+		BECC149C18BE95D80012B016 /* OCManager.h in Headers */ = {isa = PBXBuildFile; fileRef = BECC149618BE7E300012B016 /* OCManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BECC149E18BE95FE0012B016 /* OCError.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2D3188F168300DD31AB /* OCError.h */; };
 		BECC14A418BE9AFD0012B016 /* libObjective_CUPS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3C61890C83600DD31AB /* libObjective_CUPS.a */; };
 		BECC14A818BEA0EA0012B016 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BECC14A718BEA0EA0012B016 /* LICENSE */; };
@@ -110,8 +110,8 @@
 		BE42458918C63EE300B527B9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BE42458C18C63EE300B527B9 /* test-cli-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "test-cli-Prefix.pch"; sourceTree = "<group>"; };
 		BE503D9718BF970200C84357 /* OCPrinter_Validator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCPrinter_Validator.h; sourceTree = "<group>"; };
-		BECC149618BE7E300012B016 /* CUPSManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUPSManager.h; sourceTree = "<group>"; };
-		BECC149718BE7E300012B016 /* CUPSManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUPSManager.m; sourceTree = "<group>"; };
+		BECC149618BE7E300012B016 /* OCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCManager.h; sourceTree = "<group>"; };
+		BECC149718BE7E300012B016 /* OCManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCManager.m; sourceTree = "<group>"; };
 		BECC14A718BEA0EA0012B016 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BEE0A0AE18BF8912000AAB2B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		BEE64D2319150ECA00F1A3BB /* OCPrinter_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCPrinter_Private.h; sourceTree = "<group>"; };
@@ -223,7 +223,7 @@
 			children = (
 				BEE7AE0118C4C76E00F61EFA /* PrivateHeaders */,
 				BEE7AE0318C4C7A600F61EFA /* PublicHeaders */,
-				BECC149718BE7E300012B016 /* CUPSManager.m */,
+				BECC149718BE7E300012B016 /* OCManager.m */,
 				BE26D2D2188F168300DD31AB /* OCPrinter.m */,
 				BE26D2D0188F168300DD31AB /* OCPrintJob.m */,
 				BE26D2D4188F168300DD31AB /* OCError.m */,
@@ -292,7 +292,7 @@
 			isa = PBXGroup;
 			children = (
 				BEE7AE0218C4C79D00F61EFA /* Objective-CUPS.h */,
-				BECC149618BE7E300012B016 /* CUPSManager.h */,
+				BECC149618BE7E300012B016 /* OCManager.h */,
 				BE26D2D1188F168300DD31AB /* OCPrinter.h */,
 				BE26D2CF188F168300DD31AB /* OCPrintJob.h */,
 			);
@@ -308,7 +308,7 @@
 			files = (
 				BEE7AE0618C4C7E700F61EFA /* Objective-CUPS.h in Headers */,
 				BEE7AE0B18C53CEA00F61EFA /* OCPrinterUtility.h in Headers */,
-				BECC149818BE7E300012B016 /* CUPSManager.h in Headers */,
+				BECC149818BE7E300012B016 /* OCManager.h in Headers */,
 				BE26D3C018909E9D00DD31AB /* OCPrintJob.h in Headers */,
 				BE26D3BF18909E9800DD31AB /* OCPrinter.h in Headers */,
 				BEE64D2419150ECA00F1A3BB /* OCPrinter_Private.h in Headers */,
@@ -322,7 +322,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEE7AE0518C4C7E200F61EFA /* Objective-CUPS.h in Headers */,
-				BECC149C18BE95D80012B016 /* CUPSManager.h in Headers */,
+				BECC149C18BE95D80012B016 /* OCManager.h in Headers */,
 				BE26D3EA1890C8FE00DD31AB /* OCPrintJob.h in Headers */,
 				BEE7AE0C18C53CEA00F61EFA /* OCPrinterUtility.h in Headers */,
 				BE26D3E91890C8FB00DD31AB /* OCPrinter.h in Headers */,
@@ -466,7 +466,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BECC149918BE7E300012B016 /* CUPSManager.m in Sources */,
+				BECC149918BE7E300012B016 /* OCManager.m in Sources */,
 				BE26D3BC18909E7D00DD31AB /* OCPrinter.m in Sources */,
 				BE26D3BD18909E8700DD31AB /* OCPrintJob.m in Sources */,
 				BE26D3BE18909E8900DD31AB /* OCError.m in Sources */,
@@ -478,7 +478,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE503D9618BF966300C84357 /* CUPSManager.m in Sources */,
+				BE503D9618BF966300C84357 /* OCManager.m in Sources */,
 				BE26D3E61890C8E000DD31AB /* OCPrinter.m in Sources */,
 				BE26D3E71890C8E200DD31AB /* OCPrintJob.m in Sources */,
 				BE26D3E81890C8E800DD31AB /* OCError.m in Sources */,

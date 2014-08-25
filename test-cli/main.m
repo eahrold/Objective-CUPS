@@ -17,7 +17,7 @@ int main(int argc, const char *argv[])
     @autoreleasepool
     {
         ka = YES;
-        CUPSManager *manager = [CUPSManager new];
+        OCManager *manager = [OCManager new];
         //        PrintJob *p = [manager sendFile:@"/tmp/test.txt" toPrinter:@"laserjet"];
 
         [manager sendFile:@"/tmp/test.txt" toPrinter:@"laserjet" failure:^(NSError *error) {

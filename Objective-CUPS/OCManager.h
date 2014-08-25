@@ -1,5 +1,5 @@
 //
-//  CUPSManager.h
+//  OCManager.h
 //  Objective-CUPS
 //
 //  Copyright (c) 2014 Eldon Ahrold ( https://github.com/eahrold/Objective-CUPS )
@@ -30,9 +30,9 @@
 /**
  *  Interface to the CUPS system 
  */
-@interface CUPSManager : NSObject
+@interface OCManager : NSObject
 
-+ (CUPSManager *)sharedManager;
++ (OCManager *)sharedManager;
 /**
  Adds a Printer
  @param printer a populated Printer Object

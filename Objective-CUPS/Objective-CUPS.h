@@ -30,7 +30,7 @@
 #ifndef _OBJECTIVE_CUPS_
 #define _OBJECTIVE_CUPS_
 
-#import "CUPSManager.h"
+#import "OCManager.h"
 #import "OCPrinter.h"
 #import "OCPrintJob.h"
 
