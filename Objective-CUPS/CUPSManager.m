@@ -25,8 +25,8 @@
 //
 
 #import "CUPSManager.h"
-#import "Printer.h"
-#import "Printer_Private.h"
+#import "OCPrinter.h"
+#import "OCPrinter_Private.h"
 #import "PrintJob.h"
 #import "PrinterError.h"
 #import "Printer_Validator.h"
@@ -66,12 +66,12 @@
 }
 
 #pragma mark - Add Printer
-- (BOOL)addPrinter:(Printer *)printer
+- (BOOL)addPrinter:(OCPrinter *)printer
 {
     return [self addPrinter:printer error:nil];
 }
 
-- (BOOL)addPrinter:(Printer *)printer error:(NSError *__autoreleasing *)error
+- (BOOL)addPrinter:(OCPrinter *)printer error:(NSError *__autoreleasing *)error
 {
     if (![printer nameIsValid:error])
         return NO;
@@ -553,7 +553,7 @@
                     continue;
             }
 
-            Printer *p = [Printer new];
+            OCPrinter *p = [OCPrinter new];
             if (printer != NULL)
                 p.name = [NSString stringWithUTF8String:printer];
             if (description != NULL)
@@ -586,7 +586,7 @@
 {
     NSSet *set = [[self class] installedPrinters];
     NSMutableSet *pNames = [[NSMutableSet alloc] initWithCapacity:set.count];
-    for (Printer *p in set) {
+    for (OCPrinter *p in set) {
         [pNames addObject:p.name];
     }
     return pNames;

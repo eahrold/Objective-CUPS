@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@interface Printer () <NSSecureCoding>
+@interface OCPrinter () <NSSecureCoding>
 @property (nonatomic, readwrite) OSStatus status;
 @property (copy, nonatomic) NSString *ppd_tempfile;
 @property (weak, nonatomic, readwrite) NSArray *avaliableOptions;

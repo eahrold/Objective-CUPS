@@ -25,7 +25,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class Printer, PrintJob;
+@class OCPrinter, PrintJob;
 
 /**
  *  Interface to the CUPS system 
@@ -42,8 +42,8 @@
  @return Returns `YES` if printer was successfully added, or `NO` on failure.
  
  */
-- (BOOL)addPrinter:(Printer *)printer;
-- (BOOL)addPrinter:(Printer *)printer error:(NSError **)error;
+- (BOOL)addPrinter:(OCPrinter *)printer;
+- (BOOL)addPrinter:(OCPrinter *)printer error:(NSError **)error;
 
 /**
  remove a Printer

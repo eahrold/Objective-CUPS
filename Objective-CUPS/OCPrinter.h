@@ -27,7 +27,7 @@
 #import <Foundation/Foundation.h>
 
 /**Class for Adding, Removing & Modifying CUPS Printers*/
-@interface Printer : NSObject
+@interface OCPrinter : NSObject
 #pragma mark - Properties
 
 /**CUPS compliant name for a printer destination*/

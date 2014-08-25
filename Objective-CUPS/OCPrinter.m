@@ -24,8 +24,8 @@
 //
 //
 
-#import "Printer.h"
-#import "Printer_Private.h"
+#import "OCPrinter.h"
+#import "OCPrinter_Private.h"
 #import "PrintJob.h"
 #import "PrinterError.h"
 #import "CUPSManager.h"
@@ -39,7 +39,7 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
     PPD_FROM_CUPS_SERVER = 1,
 };
 
-@implementation Printer
+@implementation OCPrinter
 
 #pragma mark - Initializers / Secure Coding
 - (id)initWithCoder:(NSCoder *)aDecoder

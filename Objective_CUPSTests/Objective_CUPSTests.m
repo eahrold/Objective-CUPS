@@ -33,7 +33,7 @@
 
 @implementation Objective_CUPSTests {
     CUPSManager *_manager;
-    Printer *_printer;
+    OCPrinter *_printer;
     PrintJob *_printjob;
     int i;
 }
@@ -120,7 +120,7 @@
 
 - (void)testInstalledPrinters
 {
-    for (Printer *p in [CUPSManager installedPrinters]) {
+    for (OCPrinter *p in [CUPSManager installedPrinters]) {
         NSLog(@"ppd for printer %@ : %@", p.name, p.ppd);
     }
 }
@@ -147,7 +147,7 @@
 - (void)setUpPrinter
 {
     if (!_printer) {
-        _printer = [Printer new];
+        _printer = [OCPrinter new];
         _printer.name = @"laserjet";
         _printer.host = @"nowhere";
         _printer.protocol = @"ipp";

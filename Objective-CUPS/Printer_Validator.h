@@ -23,7 +23,7 @@
 
 #import "Objective-CUPS.h"
 
-@interface Printer ()
+@interface OCPrinter ()
 - (BOOL)nameIsValid:(NSError **)error;
 - (BOOL)configurePPD:(NSError **)error;
 @end
