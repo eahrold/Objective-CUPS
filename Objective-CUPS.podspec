@@ -16,6 +16,8 @@ Pod::Spec.new do |s|
   s.source        = { :git => "https://github.com/eahrold/Objective-CUPS.git", :tag => "0.2.0" }
   s.source_files  = 'Objective-CUPS', 'Objective-CUPS/**/*.{h,m}'
   
+  s.frameworks = 'cups','z'
+  
   s.osx.deployment_target = "10.8"
   s.requires_arc          = true
 end
