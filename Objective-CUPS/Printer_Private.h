@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-@interface Printer ()<NSSecureCoding>
-@property (nonatomic,readwrite)       OSStatus  status;
-@property (copy,nonatomic)            NSString *ppd_tempfile;
-@property (weak,nonatomic,readwrite)  NSArray  *avaliableOptions;
-@property (weak, nonatomic,readwrite) NSString *statusMessage;
-@property (weak,nonatomic,readwrite)  NSArray  *jobs;
+@interface Printer () <NSSecureCoding>
+@property (nonatomic, readwrite) OSStatus status;
+@property (copy, nonatomic) NSString *ppd_tempfile;
+@property (weak, nonatomic, readwrite) NSArray *avaliableOptions;
+@property (weak, nonatomic, readwrite) NSString *statusMessage;
+@property (weak, nonatomic, readwrite) NSArray *jobs;
 @end

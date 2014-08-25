@@ -24,7 +24,6 @@
 //
 //
 
-
 #import <Foundation/Foundation.h>
 
 /**Class for Adding, Removing & Modifying CUPS Printers*/
@@ -32,49 +31,47 @@
 #pragma mark - Properties
 
 /**CUPS compliant name for a printer destination*/
-@property (copy,nonatomic) NSString *name;
+@property (copy, nonatomic) NSString *name;
 
 /**FQDN or IP address to the CUPS Server or Printer */
-@property (copy,nonatomic) NSString *host;
+@property (copy, nonatomic) NSString *host;
 
 /** An approperiate protocol for the printer.
     @note Currently avaliabel protocols are: ipp, http, https, socket, lpd, dnssd
  */
-@property (copy,nonatomic) NSString *protocol;
+@property (copy, nonatomic) NSString *protocol;
 
 /**A human readable description of the printer */
-@property (copy,nonatomic) NSString *description;
+@property (copy, nonatomic) NSString *description;
 
 /**A human readable location of the printer */
-@property (copy,nonatomic) NSString *location;
+@property (copy, nonatomic) NSString *location;
 
 /** model name matching a result from lpinfo -m (end of each line)*/
-@property (copy,nonatomic) NSString *model;
+@property (copy, nonatomic) NSString *model;
 
 /**path to raw ppd file either .gz or .ppd */
 @property (copy, nonatomic) NSString *ppd;
 
 /** path where a PPD file can be download*/
-@property (copy,nonatomic) NSString *ppd_url;
+@property (copy, nonatomic) NSString *ppd_url;
 
 /** Array of options that use the lpoptions structure (e.g Option=Value).  
  A list of avaliable options can be obtained via lpoptions -p printer -l */
-@property (copy,nonatomic) NSArray  *options;
+@property (copy, nonatomic) NSArray *options;
 
 /** Array of options that can get applied to the printer 
 based on the model*/
-@property (weak,nonatomic,readonly) NSArray  *avaliableOptions;
+@property (weak, nonatomic, readonly) NSArray *avaliableOptions;
 
 /**current numeric state of printer */
-@property (nonatomic,readonly)       OSStatus status;
+@property (nonatomic, readonly) OSStatus status;
 
 /**current textual state of printer */
-@property (weak, nonatomic,readonly) NSString *statusMessage;
+@property (weak, nonatomic, readonly) NSString *statusMessage;
 
 /**currently printing jobs */
-@property (weak,nonatomic,readonly)       NSArray *jobs;
-
-
+@property (weak, nonatomic, readonly) NSArray *jobs;
 
 /**full uri for cups dest*/
 @property (copy, nonatomic) NSString *url;
@@ -87,10 +84,6 @@ based on the model*/
  @note Optional Keys: description, location, options.
  @return self, initialized using dictionary.
  */
--(id)initWithDictionary:(NSDictionary*)dict;
-
-
+- (id)initWithDictionary:(NSDictionary *)dict;
 
 @end
-
-

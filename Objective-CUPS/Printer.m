@@ -24,7 +24,6 @@
 //
 //
 
-
 #import "Printer.h"
 #import "Printer_Private.h"
 #import "PrintJob.h"
@@ -35,7 +34,7 @@
 #import <zlib.h>
 #import <syslog.h>
 
-typedef NS_ENUM(NSInteger, ppdDownloadModes){
+typedef NS_ENUM(NSInteger, ppdDownloadModes) {
     PPD_FROM_URL = 0,
     PPD_FROM_CUPS_SERVER = 1,
 };
@@ -43,23 +42,22 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
 @implementation Printer
 
 #pragma mark - Initializers / Secure Coding
-- (id)initWithCoder:(NSCoder*)aDecoder {
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
     self = [super init];
     if (self) {
-        NSSet* whiteList = [NSSet setWithObjects:[NSDictionary class],
+        NSSet *whiteList = [NSSet setWithObjects:[NSDictionary class],
                                                  [NSString class],
                                                  [NSArray class],
-                                                  nil];
-        
-        
-        
+                                                 nil];
+
         _name = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"];
         _host = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"host"];
         _location = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"location"];
         _description = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"description"];
         _ppd = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"ppd"];
         _ppd_url = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"ppd_url"];
-        
+
         _model = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"model"];
         _protocol = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"protocol"];
         _url = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"url"];
@@ -71,7 +69,8 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
 
 + (BOOL)supportsSecureCoding { return YES; }
 
-- (void)encodeWithCoder:(NSCoder*)aEncoder {
+- (void)encodeWithCoder:(NSCoder *)aEncoder
+{
     [aEncoder encodeObject:_name forKey:@"name"];
     [aEncoder encodeObject:_host forKey:@"host"];
     [aEncoder encodeObject:_location forKey:@"location"];
@@ -85,172 +84,175 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
     [aEncoder encodeObject:_options forKey:@"options"];
 }
 
-
--(id)initWithDictionary:(NSDictionary*)dict{
+- (id)initWithDictionary:(NSDictionary *)dict
+{
     self = [super init];
-    if(self){
+    if (self) {
         [self setValuesForKeysWithDictionary:dict];
-     }
+    }
     return self;
 }
 
--(void)dealloc{
+- (void)dealloc
+{
     NSFileManager *fm = [NSFileManager defaultManager];
-    if([fm fileExistsAtPath:self.ppd_tempfile])
+    if ([fm fileExistsAtPath:self.ppd_tempfile])
         [fm removeItemAtPath:self.ppd_tempfile error:nil];
 }
 
 #pragma mark - Accessors
--(NSString*)url{
-    if(_url){
+- (NSString *)url
+{
+    if (_url) {
         return _url;
     }
-    
-    if(!_name || !_protocol || !_host){
-        NSLog(@"%@",[NSString stringWithFormat:@"Values Cannot be nil printer:%@ protocol:%@ host:%@",_name,_protocol,_host]);
+
+    if (!_name || !_protocol || !_host) {
+        NSLog(@"%@", [NSString stringWithFormat:@"Values Cannot be nil printer:%@ protocol:%@ host:%@", _name, _protocol, _host]);
         return nil;
     }
-    
+
     // ipp and ipps for connecting to CUPS server
-    if([_protocol isEqualToString:@"ipp"]||[_protocol isEqualToString:@"ipps"]){
-        _url = [NSString stringWithFormat:@"%@://%@/printers/%@",_protocol,_host,_name];
+    if ([_protocol isEqualToString:@"ipp"] || [_protocol isEqualToString:@"ipps"]) {
+        _url = [NSString stringWithFormat:@"%@://%@/printers/%@", _protocol, _host, _name];
     }
     // http and https for connecting to CUPS server
-    else if([_protocol isEqualToString:@"http"] || [_protocol isEqualToString:@"https"]){
-        _url = [NSString stringWithFormat:@"%@://%@:631/printers/%@",_protocol,_host,_name];
+    else if ([_protocol isEqualToString:@"http"] || [_protocol isEqualToString:@"https"]) {
+        _url = [NSString stringWithFormat:@"%@://%@:631/printers/%@", _protocol, _host, _name];
     }
     // socket for connecting to AppSocket
-    else if([_protocol isEqualToString:@"socket"]){
-        _url = [NSString stringWithFormat:@"%@://%@:9100",_protocol,_host];
-    }
-    else if([_protocol isEqualToString:@"lpd"]){
-        _url = [NSString stringWithFormat:@"%@://%@",_protocol,_host];
-    }
-    else if([_protocol isEqualToString:@"smb"]){
-        _url = [NSString stringWithFormat:@"%@://%@/%@",_protocol,_host,_name];
-    }
-    else if([_protocol isEqualToString:@"dnssd"]){
-        _url = [NSString stringWithFormat:@"%@://%@._pdl-datastream._tcp.local./?bidi",_protocol,_host];
-    }
-    else{
+    else if ([_protocol isEqualToString:@"socket"]) {
+        _url = [NSString stringWithFormat:@"%@://%@:9100", _protocol, _host];
+    } else if ([_protocol isEqualToString:@"lpd"]) {
+        _url = [NSString stringWithFormat:@"%@://%@", _protocol, _host];
+    } else if ([_protocol isEqualToString:@"smb"]) {
+        _url = [NSString stringWithFormat:@"%@://%@/%@", _protocol, _host, _name];
+    } else if ([_protocol isEqualToString:@"dnssd"]) {
+        _url = [NSString stringWithFormat:@"%@://%@._pdl-datastream._tcp.local./?bidi", _protocol, _host];
+    } else {
         NSLog(@"Improper URL Format");
         return NO;
     }
     return [_url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
--(NSString *)host{
+- (NSString *)host
+{
     return [_host stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
--(NSString *)ppd{
-    if(_ppd)
+- (NSString *)ppd
+{
+    if (_ppd)
         return _ppd;
     else
         return [[CUPSManager ppdsForModel:_model] lastObject];
 }
 
--(NSString *)ppd_tempfile{
+- (NSString *)ppd_tempfile
+{
     return [NSTemporaryDirectory() stringByAppendingPathComponent:_name];
 }
 
--(NSArray*)jobs{
+- (NSArray *)jobs
+{
 #ifdef _OBJECTIVE_CUPS_
     _jobs = [PrintJob jobsForPrinter:_name];
 #endif
     return _jobs;
 }
 
--(OSStatus)status{
+- (OSStatus)status
+{
     cups_dest_t *dests,
-                *dest;
-    
+        *dest;
+
     const char *value;
     int num_dests;
-    
+
     num_dests = cupsGetDests(&dests);
     dest = cupsGetDest(_name.UTF8String, NULL, num_dests, dests);
-    if( dest == NULL){
+    if (dest == NULL) {
         return 0;
     };
-    
-    if (dest->instance == NULL)
-    {
+
+    if (dest->instance == NULL) {
         value = cupsGetOption("printer-state", dest->num_options, dest->options);
         _status = [[NSString stringWithUTF8String:value] intValue];
     }
-    
+
     cupsFreeDests(num_dests, dests);
     return _status;
 }
 
--(NSString *)statusMessage{
+- (NSString *)statusMessage
+{
     OSStatus status = self.status;
     switch (status) {
-        case IPP_PRINTER_IDLE:
-            _statusMessage = @"Idle";
-            break;
-        case IPP_PRINTER_PROCESSING:
-            _statusMessage = @"Processing";
-            break;
-        case IPP_PRINTER_STOPPED:
-            _statusMessage = @"Stopped";
-            break;
-        default:
-            _statusMessage = @"unknown";
-            break;
+    case IPP_PRINTER_IDLE:
+        _statusMessage = @"Idle";
+        break;
+    case IPP_PRINTER_PROCESSING:
+        _statusMessage = @"Processing";
+        break;
+    case IPP_PRINTER_STOPPED:
+        _statusMessage = @"Stopped";
+        break;
+    default:
+        _statusMessage = @"unknown";
+        break;
     }
     return _statusMessage;
 }
 
--(NSArray *)avaliableOptions{
+- (NSArray *)avaliableOptions
+{
     NSArray *opts = nil;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSString *file = [NSString stringWithUTF8String:cupsGetPPD(_name.UTF8String)];
 #pragma clang diagnostic pop
-    if (file)
-    {
-        opts =  [self optionsForPPD:file];
+    if (file) {
+        opts = [self optionsForPPD:file];
         unlink(file.UTF8String);
     }
-   
+
     return opts;
 }
 
 #pragma mark - Private
 
--(BOOL)configurePPD:(NSError*__autoreleasing*)error{
-    NSString* path;
-    
+- (BOOL)configurePPD:(NSError *__autoreleasing *)error
+{
+    NSString *path;
+
     // Check if we can find a match locally...
     NSString *localPPD = self.ppd;
-    if(localPPD){
+    if (localPPD) {
         NSFileManager *fm = [NSFileManager defaultManager];
-        if([fm fileExistsAtPath:localPPD]){
+        if ([fm fileExistsAtPath:localPPD]) {
             // If the file exists remove it so we can get a new one.
-            if([fm fileExistsAtPath:self.ppd_tempfile])
+            if ([fm fileExistsAtPath:self.ppd_tempfile])
                 [fm removeItemAtPath:self.ppd_tempfile error:nil];
-            
-            if([fm copyItemAtPath:localPPD toPath:self.ppd_tempfile error:nil]){
+
+            if ([fm copyItemAtPath:localPPD toPath:self.ppd_tempfile error:nil]) {
                 return YES;
             }
         }
     }
-    
-    
+
     // if not local, try and get if from the printer-installer-server
-    if(_ppd_url){
+    if (_ppd_url) {
         path = [_ppd_url stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
-        if([self downloadPPD:[NSURL URLWithString:path] mode:PPD_FROM_URL]){
+        if ([self downloadPPD:[NSURL URLWithString:path] mode:PPD_FROM_URL]) {
             return YES;
         }
     }
-    
+
     // otherwise, if it's getting shared via ipp, try to grab it from the CUPS server
-    if([_protocol isEqualToString:@"ipp"]){
-        path = [NSString stringWithFormat:@"http://%@:631/printers/%@.ppd",_host,_name];
-        if([self downloadPPD:[NSURL URLWithString:path] mode:PPD_FROM_CUPS_SERVER]){
+    if ([_protocol isEqualToString:@"ipp"]) {
+        path = [NSString stringWithFormat:@"http://%@:631/printers/%@.ppd", _host, _name];
+        if ([self downloadPPD:[NSURL URLWithString:path] mode:PPD_FROM_CUPS_SERVER]) {
             return YES;
         }
     }
@@ -258,39 +260,40 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
     return [PrinterError errorWithCode:kPrinterErrorPPDNotFound error:error];
 }
 
--(BOOL)downloadPPD:(NSURL*)URL mode:(ppdDownloadModes)mode{
-    if(!URL){
+- (BOOL)downloadPPD:(NSURL *)URL mode:(ppdDownloadModes)mode
+{
+    if (!URL) {
         return NO;
     }
-    
-    NSError* error = nil;
-    NSHTTPURLResponse* response = nil;
-    
+
+    NSError *error = nil;
+    NSHTTPURLResponse *response = nil;
+
     // Create the request.
     NSMutableURLRequest *ppdRequest = [NSMutableURLRequest requestWithURL:URL];
-    
+
     // set as GET request
     ppdRequest.HTTPMethod = @"GET";
     ppdRequest.timeoutInterval = 3;
-    
+
     // set header fields
     [ppdRequest setValue:@"application/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    
+
     // Create url connection and fire request
-    NSData* data = [NSURLConnection sendSynchronousRequest:ppdRequest
+    NSData *data = [NSURLConnection sendSynchronousRequest:ppdRequest
                                          returningResponse:&response
                                                      error:&error];
-    
+
     NSFileManager *fm = [NSFileManager defaultManager];
-    if([response statusCode] >= 400 || !data ){
+    if ([response statusCode] >= 400 || !data) {
         [fm removeItemAtPath:self.ppd_tempfile error:nil];
         return NO;
-    }else{
+    } else {
         NSString *downloadedPPD = [self.ppd_tempfile stringByAppendingString:@".gz"];
-        if([fm createFileAtPath:downloadedPPD contents:data attributes:nil]){
-            if(mode == PPD_FROM_CUPS_SERVER){
+        if ([fm createFileAtPath:downloadedPPD contents:data attributes:nil]) {
+            if (mode == PPD_FROM_CUPS_SERVER) {
                 return [fm moveItemAtPath:downloadedPPD toPath:self.ppd_tempfile error:&error];
-            }else{
+            } else {
                 return [self unzipPPD:downloadedPPD to:self.ppd_tempfile error:&error];
             }
         }
@@ -298,96 +301,89 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes){
     return NO;
 }
 
--(BOOL)unzipPPD:(NSString *)inPath to:(NSString*)outPath error:(NSError*__autoreleasing*)error{
-    int CHUNK =  0x1000;
+- (BOOL)unzipPPD:(NSString *)inPath to:(NSString *)outPath error:(NSError *__autoreleasing *)error
+{
+    int CHUNK = 0x1000;
     unsigned char buffer[CHUNK];
     gzFile file = gzopen([inPath UTF8String], "r");
-	NSMutableData* bufferData = [[NSMutableData alloc]init];
-    
-	while (1) {
+    NSMutableData *bufferData = [[NSMutableData alloc] init];
+
+    while (1) {
         int err;
         int bytes_read;
-        bytes_read = gzread (file, buffer, CHUNK - 1);
+        bytes_read = gzread(file, buffer, CHUNK - 1);
         buffer[bytes_read] = '\0';
         [bufferData appendBytes:buffer length:bytes_read];
-        
+
         if (bytes_read < CHUNK - 1) {
-            if (gzeof (file)) {
+            if (gzeof(file)) {
                 break;
-            }
-            else {
-                const char * error_string;
-                error_string = gzerror (file, & err);
+            } else {
+                const char *error_string;
+                error_string = gzerror(file, &err);
                 if (err) {
-                   [PrinterError charError:error_string error:error];
+                    [PrinterError charError:error_string error:error];
                     return NO;
                 }
             }
         }
     }
-	gzclose(file);
+    gzclose(file);
     return [bufferData writeToFile:outPath atomically:YES];
 }
 
+- (BOOL)nameIsValid:(NSError *__autoreleasing *)error
+{
+    const char *name = _name.UTF8String;
+    const char *ptr;
 
--(BOOL)nameIsValid:(NSError*__autoreleasing*)error{
-    const char  *name = _name.UTF8String;
-    const char	*ptr;
-    
-    for (ptr = name; *ptr; ptr ++){
-        if (*ptr == '@'){
+    for (ptr = name; *ptr; ptr++) {
+        if (*ptr == '@') {
             break;
-        }else if
-            ((*ptr >= 0 && *ptr <= ' ') || *ptr == 127 || *ptr == '/' ||
-             *ptr == '#'){
-                [PrinterError errorWithCode:kPrinterErrorBadCharactersInName error:error];
-                return NO;
-            }
+        } else if ((*ptr >= 0 && *ptr <= ' ') || *ptr == 127 || *ptr == '/' || *ptr == '#') {
+            [PrinterError errorWithCode:kPrinterErrorBadCharactersInName error:error];
+            return NO;
+        }
     }
-    
+
     /*
      * All the characters are good; validate the length, too...
      */
-    if((ptr - name) > 127){
+    if ((ptr - name) > 127) {
         [PrinterError errorWithCode:kPrinterErrorNameTooLong error:error];
         return NO;
     }
     return YES;
 }
 
+- (NSArray *)optionsForPPD:(NSString *)file
+{
+    NSMutableArray *array = [NSMutableArray new];
 
-
--(NSArray*)optionsForPPD:(NSString*)file{
-    NSMutableArray* array = [NSMutableArray new];
-    
-    int		i,j;                /* Looping var */
-    ppd_file_t	*ppd;			/* PPD data */
-    ppd_group_t	*group;			/* Current group */
-    ppd_option_t *option;		/* Current option */
-    ppd_choice_t *choice;		/* Current choice */
+    int i, j; /* Looping var */
+    ppd_file_t *ppd; /* PPD data */
+    ppd_group_t *group; /* Current group */
+    ppd_option_t *option; /* Current option */
+    ppd_choice_t *choice; /* Current choice */
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    if ((ppd = ppdOpenFile(file.UTF8String)) == NULL)
-    {
+    if ((ppd = ppdOpenFile(file.UTF8String)) == NULL) {
         return nil;
     }
-    
+
     ppdMarkDefaults(ppd);
-    
-    for (i = ppd->num_groups, group = ppd->groups; i > 0; i --, group ++){
-        for (j = group->num_options, option = group->options; j > 0; j --, option ++)
-        {
-            NSMutableDictionary* dict = [NSMutableDictionary new];
+
+    for (i = ppd->num_groups, group = ppd->groups; i > 0; i--, group++) {
+        for (j = group->num_options, option = group->options; j > 0; j--, option++) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
             NSMutableArray *choices = [NSMutableArray new];
-            
+
             if (!strcasecmp(option->keyword, "PageRegion"))
                 continue;
-            
-            for (j = option->num_choices, choice = option->choices;j > 0 ; j --, choice ++)
-            {
+
+            for (j = option->num_choices, choice = option->choices; j > 0; j--, choice++) {
                 [choices addObject:[NSString stringWithUTF8String:choice->choice]];
-                
             }
             [dict setObject:[NSString stringWithUTF8String:option->keyword]
                      forKey:@"option"];

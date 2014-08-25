@@ -13,3 +13,4 @@ build/*
 *~.nib
 xcuserdata
 project.xcworkspace
+!.clang-format

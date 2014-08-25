@@ -24,77 +24,92 @@
 //
 //
 
-
 #import "PrinterError.h"
 #import <cups/cups.h>
 //  The Domain to user with error codes and Alert Panel
-NSString* const PrinterErrorDomain = @"com.eeaapps.objective-CUPS";
+NSString *const PrinterErrorDomain = @"com.eeaapps.objective-CUPS";
 
 @implementation PrinterError
 
-+ (BOOL) errorWithCode:(int)code error:(NSError *__autoreleasing *)error
++ (BOOL)errorWithCode:(int)code error:(NSError *__autoreleasing *)error
 {
-    NSString* message = [PrinterError errorTextForCode:code];
+    NSString *message = [PrinterError errorTextForCode:code];
     [self errorWithCode:code message:message error:error];
     return NO;
 }
 
-+(BOOL)cupsError:(NSError *__autoreleasing *)error{
++ (BOOL)cupsError:(NSError *__autoreleasing *)error
+{
     NSString *message = [NSString stringWithUTF8String:cupsLastErrorString()];
     [self errorWithCode:cupsLastError() message:message error:error];
     return NO;
 }
 
-+(BOOL)charError:(const char*)message error:(NSError *__autoreleasing *)error{
++ (BOOL)charError:(const char *)message error:(NSError *__autoreleasing *)error
+{
     NSString *msg = [NSString stringWithUTF8String:message];
     [self errorWithCode:1 message:msg error:error];
     return NO;
 }
 
-+(BOOL)errorWithCode:(NSInteger)code message:(NSString *)message error:(NSError*__autoreleasing*)error{
-    if(error)
++ (BOOL)errorWithCode:(NSInteger)code message:(NSString *)message error:(NSError *__autoreleasing *)error
+{
+    if (error)
         *error = [self errorWithCode:code message:message];
     else
-        NSLog(@"%@",message);
+        NSLog(@"%@", message);
     return NO;
 }
 
-+(NSError*)errorWithCode:(NSInteger)code message:(NSString*)message{
++ (NSError *)errorWithCode:(NSInteger)code message:(NSString *)message
+{
     NSError *error = [NSError errorWithDomain:PrinterErrorDomain
                                          code:code
-                                     userInfo:@{NSLocalizedDescriptionKey:message}];
+                                     userInfo:@{ NSLocalizedDescriptionKey : message }];
     return error;
 }
 
-+(NSString *) errorTextForCode:(int)code {
-    NSString * codeText = @"";
++ (NSString *)errorTextForCode:(int)code
+{
+    NSString *codeText = @"";
     switch (code) {
-        case kPrinterErrorInvalidURL
-            : codeText = @"The URL to the printer is incorrect.  Contact the System Admin";
-            break;
-        case kPrinterErrorPPDNotFound: codeText = @"No PPD Avaliable, please download and install the drivers from the manufacturer.";
-            break;
-        case kPrinterErrorInvalidProtocol:codeText = @"That url scheme is not supported at this time";
-            break;
-        case kPrinterErrorCantWriteFile:codeText = @"Unable to write to PPD file";
-            break;
-        case kPrinterErrorCantOpenPPD:codeText = @"Unable to open PPD file";
-            break;
-        case kPrinterErrorIncompletePrinter:codeText = @"Some Required attributes for the printer were not supplied";
-            break;
-        case kPrinterErrorBadCharactersInName:codeText = @"The printer name must only be printable characters";
-            break;
-        case kPrinterErrorNameTooLong:codeText = @"the printer name is too long";
-            break;
-        case kPrinterErrorProblemCancelingJobs:codeText = @"there was a problem canceling some jobs";
-            break;
-        case kPrintJobAlreaySubmitted:codeText = @"Print Jobs can only be submitted once";
-            break;
-        case kPrintJobNoFileSubmitted:codeText = @"Print Jobs can only be submitted once";
-            break;
-        default: codeText = @"There was a unknown problem, sorry!";
-            break;
-            
+    case kPrinterErrorInvalidURL
+        :
+        codeText = @"The URL to the printer is incorrect.  Contact the System Admin";
+        break;
+    case kPrinterErrorPPDNotFound:
+        codeText = @"No PPD Avaliable, please download and install the drivers from the manufacturer.";
+        break;
+    case kPrinterErrorInvalidProtocol:
+        codeText = @"That url scheme is not supported at this time";
+        break;
+    case kPrinterErrorCantWriteFile:
+        codeText = @"Unable to write to PPD file";
+        break;
+    case kPrinterErrorCantOpenPPD:
+        codeText = @"Unable to open PPD file";
+        break;
+    case kPrinterErrorIncompletePrinter:
+        codeText = @"Some Required attributes for the printer were not supplied";
+        break;
+    case kPrinterErrorBadCharactersInName:
+        codeText = @"The printer name must only be printable characters";
+        break;
+    case kPrinterErrorNameTooLong:
+        codeText = @"the printer name is too long";
+        break;
+    case kPrinterErrorProblemCancelingJobs:
+        codeText = @"there was a problem canceling some jobs";
+        break;
+    case kPrintJobAlreaySubmitted:
+        codeText = @"Print Jobs can only be submitted once";
+        break;
+    case kPrintJobNoFileSubmitted:
+        codeText = @"Print Jobs can only be submitted once";
+        break;
+    default:
+        codeText = @"There was a unknown problem, sorry!";
+        break;
     }
     return codeText;
 }

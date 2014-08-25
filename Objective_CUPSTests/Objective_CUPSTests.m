@@ -31,11 +31,11 @@
 
 @end
 
-@implementation Objective_CUPSTests{
+@implementation Objective_CUPSTests {
     CUPSManager *_manager;
-    Printer     *_printer;
-    PrintJob    *_printjob;
-    int         i;
+    Printer *_printer;
+    PrintJob *_printjob;
+    int i;
 }
 
 - (void)setUp
@@ -52,8 +52,7 @@
     [super tearDown];
 }
 
-
--(void)testAll;
+- (void)testAll;
 {
     [self testAddPrinter];
     [self testAddOption];
@@ -64,59 +63,69 @@
     [self testRemovePrinter];
 }
 
-
--(void)testAddPrinter{
+- (void)testAddPrinter
+{
     NSError *error;
-    _printer.options = @[@"HPOption_Tray4=Tray4_500",@"HPOption_Tray3=True"];
-    XCTAssertTrue([_manager addPrinter:_printer error:&error], @"Add Printer Error: %@",error);
+    _printer.options = @[ @"HPOption_Tray4=Tray4_500", @"HPOption_Tray3=True" ];
+    XCTAssertTrue([_manager addPrinter:_printer error:&error], @"Add Printer Error: %@", error);
 }
 
--(void)testAvaliableOptions{
-    NSLog(@"%@",[_printer avaliableOptions]);
+- (void)testAvaliableOptions
+{
+    NSLog(@"%@", [_printer avaliableOptions]);
 }
 
--(void)testAddOption{
-    XCTAssertTrue([_manager addOptions:@[@"HPOption_Tray3=Tray3_500"] toPrinter:_printer.name],@"Add Option Error:");
+- (void)testAddOption
+{
+    XCTAssertTrue([_manager addOptions:@[ @"HPOption_Tray3=Tray3_500" ] toPrinter:_printer.name], @"Add Option Error:");
 }
 
--(void)testStatus{
-    NSLog(@"%@",_printer.statusMessage);
+- (void)testStatus
+{
+    NSLog(@"%@", _printer.statusMessage);
     XCTAssertNotEqual(_printer.status, 0, @"Bad Status:");
 }
 
--(void)testPrintFileFromPrinter{
+- (void)testPrintFileFromPrinter
+{
     NSError *error;
-    XCTAssertTrue([_manager sendFile:@"/tmp/test.txt" toPrinter:_printer.name error:&error],@"Printing Error: %@",error);
+    XCTAssertTrue([_manager sendFile:@"/tmp/test.txt" toPrinter:_printer.name error:&error], @"Printing Error: %@", error);
 }
 
--(void)testPrintFilesFromJob{
+- (void)testPrintFilesFromJob
+{
     NSError *error;
     [self setupJob];
-    [_printjob addFiles:@[@"/tmp/test.txt",@"/tmp/test.txt"]];
+    [_printjob addFiles:@[ @"/tmp/test.txt", @"/tmp/test.txt" ]];
     sleep(1);
-    XCTAssertTrue([_printjob submit:&error],@"Print Job Error: %@",error);
+    XCTAssertTrue([_printjob submit:&error], @"Print Job Error: %@", error);
 }
 
--(void)testCancelJob{
-    XCTAssertTrue([PrintJob cancelJobNamed:@"test.txt"],@"Cancel Job Error");
+- (void)testCancelJob
+{
+    XCTAssertTrue([PrintJob cancelJobNamed:@"test.txt"], @"Cancel Job Error");
 }
 
--(void)testCancelJobOnPrinter{
+- (void)testCancelJobOnPrinter
+{
     NSError *error;
     XCTAssertTrue([_manager cancelJobsOnPrinter:_printer.name error:&error]);
 }
 
--(void)testOptionsForModel{
-    NSArray * arr = [CUPSManager optionsForModel:_printer.model];
-    NSLog(@"%@",arr);
+- (void)testOptionsForModel
+{
+    NSArray *arr = [CUPSManager optionsForModel:_printer.model];
+    NSLog(@"%@", arr);
 }
 
--(void)testInstalledPrinters{
-    for (Printer *p in [CUPSManager installedPrinters]){
-        NSLog(@"ppd for printer %@ : %@",p.name,p.ppd);
+- (void)testInstalledPrinters
+{
+    for (Printer *p in [CUPSManager installedPrinters]) {
+        NSLog(@"ppd for printer %@ : %@", p.name, p.ppd);
     }
 }
--(void)testPrintJobAndWatch{
+- (void)testPrintJobAndWatch
+{
     [_manager sendFile:@"/tmp/test.txt" toPrinter:_printer.name failure:^(NSError *error) {
         XCTAssertNil(error, @"Problem Printing: %@",error.localizedDescription);
         NSLog(@"%@",error.localizedDescription);
@@ -126,28 +135,29 @@
         i++;
         if (i > 5)
             [PrintJob cancelJobWithID:jobID];
-
     }];
 }
 
--(void)testRemovePrinter{
+- (void)testRemovePrinter
+{
     NSError *error;
-    XCTAssertTrue([_manager removePrinter:_printer.name error:&error], @"Add Printer Error: %@",error);
+    XCTAssertTrue([_manager removePrinter:_printer.name error:&error], @"Add Printer Error: %@", error);
 }
 
-
--(void)setUpPrinter{
-    if(!_printer){
+- (void)setUpPrinter
+{
+    if (!_printer) {
         _printer = [Printer new];
         _printer.name = @"laserjet";
-        _printer.host  = @"masscomm.loyno.edu";
+        _printer.host = @"nowhere";
         _printer.protocol = @"ipp";
         _printer.description = @"LaserJet";
         _printer.model = @"HP Color LaserJet CP5220 Series with Duplexer";
     }
 }
 
--(void)setupJob{
+- (void)setupJob
+{
     _printjob = [PrintJob new];
     _printjob.dest = _printer.name;
 }

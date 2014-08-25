@@ -24,35 +24,31 @@
 //
 //
 
-
 #import <Foundation/Foundation.h>
-extern NSString* const PIDomain;
+extern NSString *const PIDomain;
 
 @interface PrinterError : NSError
-+ (BOOL) cupsError:(NSError**)error;
-+ (BOOL) charError:(const char*)message error:(NSError**)error;
-+ (BOOL) errorWithCode:(int)code error:(NSError**)error;;
-+ (BOOL) errorWithCode:(NSInteger)rc message:(NSString*)msg error:(NSError**)error;;
++ (BOOL)cupsError:(NSError **)error;
++ (BOOL)charError:(const char *)message error:(NSError **)error;
++ (BOOL)errorWithCode:(int)code error:(NSError **)error;
+;
++ (BOOL)errorWithCode:(NSInteger)rc message:(NSString *)msg error:(NSError **)error;
+;
 
 @end
 
 enum PrinterErrorCodes {
     kPrinterErrorSuccess = 0,
-
     kPrinterErrorPPDNotFound = 0x1000,
     kPrinterErrorCantOpenPPD,
     kPrinterErrorCantWriteFile,
-
     kPrinterErrorIncompletePrinter = 0x1010,
     kPrinterErrorInvalidProtocol,
     kPrinterErrorInvalidURL,
-
     kPrinterErrorBadCharactersInName = 0x1020,
     kPrinterErrorNameTooLong,
-    
     kPrinterErrorProblemCancelingJobs = 0x1030,
     kPrinterErrorServerNotFound,
-
 };
 
 enum PrintJobErrorCodes {

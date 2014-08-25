@@ -24,6 +24,6 @@
 #import "Objective-CUPS.h"
 
 @interface Printer ()
--(BOOL)nameIsValid:(NSError**)error;
--(BOOL)configurePPD:(NSError**)error;
+- (BOOL)nameIsValid:(NSError **)error;
+- (BOOL)configurePPD:(NSError **)error;
 @end

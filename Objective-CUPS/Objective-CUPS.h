@@ -28,11 +28,10 @@
 #import <Foundation/Foundation.h>
 
 #ifndef _OBJECTIVE_CUPS_
-    #define _OBJECTIVE_CUPS_
+#define _OBJECTIVE_CUPS_
 
-    #import "CUPSManager.h"
-    #import "Printer.h"
-    #import "PrintJob.h"
+#import "CUPSManager.h"
+#import "Printer.h"
+#import "PrintJob.h"
 
 #endif /*_OBJECTIVE_CUPS_*/
-

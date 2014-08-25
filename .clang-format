@@ -1,0 +1,6 @@
+---
+BasedOnStyle:  WebKit
+PointerBindsToType: false
+ObjCSpaceAfterProperty: true
+...
+
