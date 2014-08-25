@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         	= "Objective-CUPS"
-  s.version      	= "0.2.0"
+  s.version      	= "0.2.1"
   s.summary      	= "Objective-C framework for interacting with the CUPS system."
 
   s.description  	= <<-DESC
@@ -13,10 +13,10 @@ Pod::Spec.new do |s|
   s.license      	= { :type => 'MIT', :file => 'LICENSE' }
   s.authors      	= "Eldon Ahrold" 
   
-  s.source        = { :git => "https://github.com/eahrold/Objective-CUPS.git", :tag => "0.2.0" }
+  s.source        = { :git => "https://github.com/eahrold/Objective-CUPS.git", :tag => "0.2.1" }
   s.source_files  = 'Objective-CUPS', 'Objective-CUPS/**/*.{h,m}'
   
-  s.frameworks = 'cups','z'
+  s.libraries = 'cups','z'
   
   s.osx.deployment_target = "10.8"
   s.requires_arc          = true
