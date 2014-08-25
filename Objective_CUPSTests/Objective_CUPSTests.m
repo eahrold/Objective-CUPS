@@ -34,7 +34,7 @@
 @implementation Objective_CUPSTests {
     CUPSManager *_manager;
     OCPrinter *_printer;
-    PrintJob *_printjob;
+    OCPrintJob *_printjob;
     int i;
 }
 
@@ -103,7 +103,7 @@
 
 - (void)testCancelJob
 {
-    XCTAssertTrue([PrintJob cancelJobNamed:@"test.txt"], @"Cancel Job Error");
+    XCTAssertTrue([OCPrintJob cancelJobNamed:@"test.txt"], @"Cancel Job Error");
 }
 
 - (void)testCancelJobOnPrinter
@@ -134,7 +134,7 @@
         NSLog(@"%@ count:%d",status,i);
         i++;
         if (i > 5)
-            [PrintJob cancelJobWithID:jobID];
+            [OCPrintJob cancelJobWithID:jobID];
     }];
 }
 
@@ -158,7 +158,7 @@
 
 - (void)setupJob
 {
-    _printjob = [PrintJob new];
+    _printjob = [OCPrintJob new];
     _printjob.dest = _printer.name;
 }
 

@@ -10,19 +10,19 @@
 		BE26D3BA18909E6200DD31AB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3801890685900DD31AB /* libz.dylib */; };
 		BE26D3BB18909E6B00DD31AB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D2AB188F163D00DD31AB /* Foundation.framework */; };
 		BE26D3BC18909E7D00DD31AB /* OCPrinter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D2D2188F168300DD31AB /* OCPrinter.m */; };
-		BE26D3BD18909E8700DD31AB /* PrintJob.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D2D0188F168300DD31AB /* PrintJob.m */; };
+		BE26D3BD18909E8700DD31AB /* OCPrintJob.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D2D0188F168300DD31AB /* OCPrintJob.m */; };
 		BE26D3BE18909E8900DD31AB /* PrinterError.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D2D4188F168300DD31AB /* PrinterError.m */; };
 		BE26D3BF18909E9800DD31AB /* OCPrinter.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2D1188F168300DD31AB /* OCPrinter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BE26D3C018909E9D00DD31AB /* PrintJob.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2CF188F168300DD31AB /* PrintJob.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE26D3C018909E9D00DD31AB /* OCPrintJob.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2CF188F168300DD31AB /* OCPrintJob.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BE26D3D31890C83600DD31AB /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D2B9188F163D00DD31AB /* XCTest.framework */; };
 		BE26D3D41890C83600DD31AB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D2A8188F163D00DD31AB /* Cocoa.framework */; };
 		BE26D3DD1890C83600DD31AB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE26D3DB1890C83600DD31AB /* InfoPlist.strings */; };
 		BE26D3DF1890C83700DD31AB /* Objective_CUPSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D3DE1890C83700DD31AB /* Objective_CUPSTests.m */; };
 		BE26D3E61890C8E000DD31AB /* OCPrinter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D2D2188F168300DD31AB /* OCPrinter.m */; };
-		BE26D3E71890C8E200DD31AB /* PrintJob.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D2D0188F168300DD31AB /* PrintJob.m */; };
+		BE26D3E71890C8E200DD31AB /* OCPrintJob.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D2D0188F168300DD31AB /* OCPrintJob.m */; };
 		BE26D3E81890C8E800DD31AB /* PrinterError.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26D2D4188F168300DD31AB /* PrinterError.m */; };
 		BE26D3E91890C8FB00DD31AB /* OCPrinter.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2D1188F168300DD31AB /* OCPrinter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BE26D3EA1890C8FE00DD31AB /* PrintJob.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2CF188F168300DD31AB /* PrintJob.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE26D3EA1890C8FE00DD31AB /* OCPrintJob.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2CF188F168300DD31AB /* OCPrintJob.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BE26D3EB1890C90100DD31AB /* PrinterError.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2D3188F168300DD31AB /* PrinterError.h */; };
 		BE26D3ED1890CC3900DD31AB /* libcups.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3EC1890CC3900DD31AB /* libcups.dylib */; };
 		BE26D3EE1890CC4A00DD31AB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3801890685900DD31AB /* libz.dylib */; };
@@ -85,8 +85,8 @@
 		BE26D2AC188F163D00DD31AB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		BE26D2AD188F163D00DD31AB /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		BE26D2B9188F163D00DD31AB /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		BE26D2CF188F168300DD31AB /* PrintJob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintJob.h; sourceTree = "<group>"; };
-		BE26D2D0188F168300DD31AB /* PrintJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintJob.m; sourceTree = "<group>"; };
+		BE26D2CF188F168300DD31AB /* OCPrintJob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCPrintJob.h; sourceTree = "<group>"; };
+		BE26D2D0188F168300DD31AB /* OCPrintJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCPrintJob.m; sourceTree = "<group>"; };
 		BE26D2D1188F168300DD31AB /* OCPrinter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCPrinter.h; sourceTree = "<group>"; };
 		BE26D2D2188F168300DD31AB /* OCPrinter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCPrinter.m; sourceTree = "<group>"; };
 		BE26D2D3188F168300DD31AB /* PrinterError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrinterError.h; sourceTree = "<group>"; };
@@ -225,7 +225,7 @@
 				BEE7AE0318C4C7A600F61EFA /* PublicHeaders */,
 				BECC149718BE7E300012B016 /* CUPSManager.m */,
 				BE26D2D2188F168300DD31AB /* OCPrinter.m */,
-				BE26D2D0188F168300DD31AB /* PrintJob.m */,
+				BE26D2D0188F168300DD31AB /* OCPrintJob.m */,
 				BE26D2D4188F168300DD31AB /* PrinterError.m */,
 				BEE7AE0718C53CEA00F61EFA /* PrinterUtility.m */,
 				BE26D330188F1A7F00DD31AB /* Supporting Files */,
@@ -294,7 +294,7 @@
 				BECC149618BE7E300012B016 /* CUPSManager.h */,
 				BEE7AE0218C4C79D00F61EFA /* Objective-CUPS.h */,
 				BE26D2D1188F168300DD31AB /* OCPrinter.h */,
-				BE26D2CF188F168300DD31AB /* PrintJob.h */,
+				BE26D2CF188F168300DD31AB /* OCPrintJob.h */,
 			);
 			name = PublicHeaders;
 			sourceTree = "<group>";
@@ -309,7 +309,7 @@
 				BEE7AE0618C4C7E700F61EFA /* Objective-CUPS.h in Headers */,
 				BEE7AE0B18C53CEA00F61EFA /* PrinterUtility.h in Headers */,
 				BECC149818BE7E300012B016 /* CUPSManager.h in Headers */,
-				BE26D3C018909E9D00DD31AB /* PrintJob.h in Headers */,
+				BE26D3C018909E9D00DD31AB /* OCPrintJob.h in Headers */,
 				BE26D3BF18909E9800DD31AB /* OCPrinter.h in Headers */,
 				BEE64D2419150ECA00F1A3BB /* OCPrinter_Private.h in Headers */,
 				BECC149E18BE95FE0012B016 /* PrinterError.h in Headers */,
@@ -323,7 +323,7 @@
 			files = (
 				BEE7AE0518C4C7E200F61EFA /* Objective-CUPS.h in Headers */,
 				BECC149C18BE95D80012B016 /* CUPSManager.h in Headers */,
-				BE26D3EA1890C8FE00DD31AB /* PrintJob.h in Headers */,
+				BE26D3EA1890C8FE00DD31AB /* OCPrintJob.h in Headers */,
 				BEE7AE0C18C53CEA00F61EFA /* PrinterUtility.h in Headers */,
 				BE26D3E91890C8FB00DD31AB /* OCPrinter.h in Headers */,
 				BEE64D2519150ECA00F1A3BB /* OCPrinter_Private.h in Headers */,
@@ -468,7 +468,7 @@
 			files = (
 				BECC149918BE7E300012B016 /* CUPSManager.m in Sources */,
 				BE26D3BC18909E7D00DD31AB /* OCPrinter.m in Sources */,
-				BE26D3BD18909E8700DD31AB /* PrintJob.m in Sources */,
+				BE26D3BD18909E8700DD31AB /* OCPrintJob.m in Sources */,
 				BE26D3BE18909E8900DD31AB /* PrinterError.m in Sources */,
 				BEE7AE0918C53CEA00F61EFA /* PrinterUtility.m in Sources */,
 			);
@@ -480,7 +480,7 @@
 			files = (
 				BE503D9618BF966300C84357 /* CUPSManager.m in Sources */,
 				BE26D3E61890C8E000DD31AB /* OCPrinter.m in Sources */,
-				BE26D3E71890C8E200DD31AB /* PrintJob.m in Sources */,
+				BE26D3E71890C8E200DD31AB /* OCPrintJob.m in Sources */,
 				BE26D3E81890C8E800DD31AB /* PrinterError.m in Sources */,
 				BEE7AE0A18C53CEA00F61EFA /* PrinterUtility.m in Sources */,
 			);

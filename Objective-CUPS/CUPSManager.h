@@ -25,7 +25,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class OCPrinter, PrintJob;
+@class OCPrinter, OCPrintJob;
 
 /**
  *  Interface to the CUPS system 
@@ -122,8 +122,8 @@
  @param error initialized and set if error occurs
  @return Returns `YES` on success, or `NO` on failure.
  */
-- (PrintJob *)sendFile:(NSString *)file toPrinter:(NSString *)printer;
-- (PrintJob *)sendFile:(NSString *)file toPrinter:(NSString *)printer error:(NSError **)error;
+- (OCPrintJob *)sendFile:(NSString *)file toPrinter:(NSString *)printer;
+- (OCPrintJob *)sendFile:(NSString *)file toPrinter:(NSString *)printer error:(NSError **)error;
 
 /**
  *  Send a file to a printer and monitor using a reply block
@@ -146,8 +146,8 @@
  @param error initialized and set if error occurs
  @return Returns `YES` on success, or `NO` on failure.
  */
-- (PrintJob *)sendFileAtURL:(NSURL *)file toPrinter:(NSString *)printer;
-- (PrintJob *)sendFileAtURL:(NSURL *)file toPrinter:(NSString *)printer error:(NSError **)error;
+- (OCPrintJob *)sendFileAtURL:(NSURL *)file toPrinter:(NSString *)printer;
+- (OCPrintJob *)sendFileAtURL:(NSURL *)file toPrinter:(NSString *)printer error:(NSError **)error;
 
 /**
  description

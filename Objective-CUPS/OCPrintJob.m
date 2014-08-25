@@ -23,11 +23,11 @@
 // THE SOFTWARE.
 //
 //
-#import "PrintJob.h"
+#import "OCPrintJob.h"
 #import "PrinterError.h"
 #import <cups/cups.h>
 
-@interface PrintJob () {
+@interface OCPrintJob () {
 @private
     NSMutableArray *_files;
     BOOL _submitted;
@@ -39,7 +39,7 @@
 @end
 
 #pragma mark - PrintJob
-@implementation PrintJob
+@implementation OCPrintJob
 
 - (void)dealloc
 {
@@ -313,7 +313,7 @@
 
     jobArray = [[NSMutableArray alloc] initWithCapacity:num_jobs];
     for (i = 0; i < num_jobs; i++) {
-        PrintJob *job = [[PrintJob alloc] initWithJob_t:jobs index:i];
+        OCPrintJob *job = [[OCPrintJob alloc] initWithJob_t:jobs index:i];
         [jobArray addObject:job];
     }
 
@@ -323,7 +323,7 @@
 
 + (void)cancelAllJobs
 {
-    for (PrintJob *job in [self jobsForAllPrinters]) {
+    for (OCPrintJob *job in [self jobsForAllPrinters]) {
         [job cancel];
     }
 }
@@ -354,7 +354,7 @@
 {
     BOOL rc = NO;
     NSArray *jobs = [self jobsForAllPrinters];
-    for (PrintJob *job in jobs) {
+    for (OCPrintJob *job in jobs) {
         if ([predicate evaluateWithObject:job]) {
             rc = [job cancel];
         }

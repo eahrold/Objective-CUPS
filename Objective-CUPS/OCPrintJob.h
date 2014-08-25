@@ -25,14 +25,14 @@
 //
 
 #import <Foundation/Foundation.h>
-@class PrintJob;
+@class OCPrintJob;
 
 @protocol PrintJobMonitor <NSObject>
-- (void)didRecieveStatusUpdate:(NSString *)msg job:(PrintJob *)job;
+- (void)didRecieveStatusUpdate:(NSString *)msg job:(OCPrintJob *)job;
 @end
 
 /**Class for Monitoring Print Jobs*/
-@interface PrintJob : NSObject
+@interface OCPrintJob : NSObject
 
 @property (weak) id<PrintJobMonitor> jobMonitor;
 

@@ -27,7 +27,7 @@
 #import "CUPSManager.h"
 #import "OCPrinter.h"
 #import "OCPrinter_Private.h"
-#import "PrintJob.h"
+#import "OCPrintJob.h"
 #import "PrinterError.h"
 #import "Printer_Validator.h"
 #import "PrinterUtility.h"
@@ -48,7 +48,7 @@
     NSLog(@"deallocated: %@", self);
 }
 
-- (void)didRecieveStatusUpdate:(NSString *)msg job:(PrintJob *)job
+- (void)didRecieveStatusUpdate:(NSString *)msg job:(OCPrintJob *)job
 {
     if (_jobStatus) {
         _jobStatus(msg, job.jid);
@@ -290,8 +290,8 @@
 - (BOOL)cancelJobsOnPrinter:(NSString *)printer error:(NSError *__autoreleasing *)error
 {
     int faults = 0;
-    NSArray *jobs = [PrintJob jobsForPrinter:printer];
-    for (PrintJob *job in jobs) {
+    NSArray *jobs = [OCPrintJob jobsForPrinter:printer];
+    for (OCPrintJob *job in jobs) {
         if (![job cancel])
             faults++;
     }
@@ -344,23 +344,23 @@
 }
 
 #pragma mark - Printing
-- (PrintJob *)sendFileAtURL:(NSURL *)file toPrinter:(NSString *)printer
+- (OCPrintJob *)sendFileAtURL:(NSURL *)file toPrinter:(NSString *)printer
 {
     return [self sendFileAtURL:file toPrinter:printer error:nil];
 }
-- (PrintJob *)sendFileAtURL:(NSURL *)file toPrinter:(NSString *)printer error:(NSError *__autoreleasing *)error
+- (OCPrintJob *)sendFileAtURL:(NSURL *)file toPrinter:(NSString *)printer error:(NSError *__autoreleasing *)error
 {
     return [self sendFile:file.path toPrinter:printer error:error];
 }
 
-- (PrintJob *)sendFile:(NSString *)file toPrinter:(NSString *)printer
+- (OCPrintJob *)sendFile:(NSString *)file toPrinter:(NSString *)printer
 {
     return [self sendFile:file toPrinter:printer error:nil];
 }
 
-- (PrintJob *)sendFile:(NSString *)file toPrinter:(NSString *)printer error:(NSError *__autoreleasing *)error
+- (OCPrintJob *)sendFile:(NSString *)file toPrinter:(NSString *)printer error:(NSError *__autoreleasing *)error
 {
-    PrintJob *job = [PrintJob new];
+    OCPrintJob *job = [OCPrintJob new];
     job.dest = printer;
     [job addFile:file];
     [job submit:error];
@@ -370,7 +370,7 @@
 - (void)sendFile:(NSString *)file toPrinter:(NSString *)printer failure:(void (^)(NSError *error))failure watch:(void (^)(NSString *, NSInteger))watch
 {
     NSError *error;
-    PrintJob *job = [PrintJob new];
+    OCPrintJob *job = [OCPrintJob new];
     job.dest = printer;
     job.jobMonitor = self;
     _jobStatus = watch;

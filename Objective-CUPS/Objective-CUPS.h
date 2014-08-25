@@ -32,6 +32,6 @@
 
 #import "CUPSManager.h"
 #import "OCPrinter.h"
-#import "PrintJob.h"
+#import "OCPrintJob.h"
 
 #endif /*_OBJECTIVE_CUPS_*/

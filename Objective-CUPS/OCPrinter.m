@@ -26,7 +26,7 @@
 
 #import "OCPrinter.h"
 #import "OCPrinter_Private.h"
-#import "PrintJob.h"
+#import "OCPrintJob.h"
 #import "PrinterError.h"
 #import "CUPSManager.h"
 #import <cups/cups.h>
