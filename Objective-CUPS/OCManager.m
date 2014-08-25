@@ -104,7 +104,7 @@
         }
     }
 
-    num_options = cupsAddOption("device-uri", printer.url.UTF8String,
+    num_options = cupsAddOption("device-uri", printer.uri.UTF8String,
                                 num_options, &options);
 
     httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri), "ipp", NULL,
@@ -563,8 +563,8 @@
             if (model != NULL)
                 p.model = [NSString stringWithUTF8String:model];
             if (device != NULL) {
-                p.url = [NSString stringWithUTF8String:device];
-                NSURL *url = [NSURL URLWithString:p.url];
+                p.uri = [NSString stringWithUTF8String:device];
+                NSURL *url = [NSURL URLWithString:p.uri];
                 p.protocol = url.scheme;
                 p.host = url.host;
             }

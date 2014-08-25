@@ -103,8 +103,13 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
 #pragma mark - Accessors
 - (NSString *)url
 {
-    if (_url) {
-        return _url;
+    return self.uri;
+}
+
+- (NSString *)uri
+{
+    if (_uri) {
+        return _uri;
     }
 
     if (!_name || !_protocol || !_host) {
@@ -114,26 +119,26 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
 
     // ipp and ipps for connecting to CUPS server
     if ([_protocol isEqualToString:@"ipp"] || [_protocol isEqualToString:@"ipps"]) {
-        _url = [NSString stringWithFormat:@"%@://%@/printers/%@", _protocol, _host, _name];
+        _uri = [NSString stringWithFormat:@"%@://%@/printers/%@", _protocol, _host, _name];
     }
     // http and https for connecting to CUPS server
     else if ([_protocol isEqualToString:@"http"] || [_protocol isEqualToString:@"https"]) {
-        _url = [NSString stringWithFormat:@"%@://%@:631/printers/%@", _protocol, _host, _name];
+        _uri = [NSString stringWithFormat:@"%@://%@:631/printers/%@", _protocol, _host, _name];
     }
     // socket for connecting to AppSocket
     else if ([_protocol isEqualToString:@"socket"]) {
-        _url = [NSString stringWithFormat:@"%@://%@:9100", _protocol, _host];
+        _uri = [NSString stringWithFormat:@"%@://%@:9100", _protocol, _host];
     } else if ([_protocol isEqualToString:@"lpd"]) {
-        _url = [NSString stringWithFormat:@"%@://%@", _protocol, _host];
+        _uri = [NSString stringWithFormat:@"%@://%@", _protocol, _host];
     } else if ([_protocol isEqualToString:@"smb"]) {
-        _url = [NSString stringWithFormat:@"%@://%@/%@", _protocol, _host, _name];
+        _uri = [NSString stringWithFormat:@"%@://%@/%@", _protocol, _host, _name];
     } else if ([_protocol isEqualToString:@"dnssd"]) {
-        _url = [NSString stringWithFormat:@"%@://%@._pdl-datastream._tcp.local./?bidi", _protocol, _host];
+        _uri = [NSString stringWithFormat:@"%@://%@._pdl-datastream._tcp.local./?bidi", _protocol, _host];
     } else {
-        NSLog(@"Improper URL Format");
+        NSLog(@"Improper uri Format");
         return NO;
     }
-    return [_url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    return [_uri stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)host

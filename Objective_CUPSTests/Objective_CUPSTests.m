@@ -46,6 +46,24 @@
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
+- (void)setUpPrinter
+{
+    if (!_printer) {
+        _printer = [OCPrinter new];
+        _printer.name = @"laserjet";
+        _printer.host = @"nowhere";
+        _printer.protocol = @"ipp";
+        _printer.description = @"LaserJet";
+        _printer.model = @"HP Color LaserJet CP5220 Series with Duplexer";
+    }
+}
+
+- (void)setupJob
+{
+    _printjob = [OCPrintJob new];
+    _printjob.dest = _printer.name;
+}
+
 - (void)tearDown
 {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -142,24 +160,6 @@
 {
     NSError *error;
     XCTAssertTrue([_manager removePrinter:_printer.name error:&error], @"Add Printer Error: %@", error);
-}
-
-- (void)setUpPrinter
-{
-    if (!_printer) {
-        _printer = [OCPrinter new];
-        _printer.name = @"laserjet";
-        _printer.host = @"nowhere";
-        _printer.protocol = @"ipp";
-        _printer.description = @"LaserJet";
-        _printer.model = @"HP Color LaserJet CP5220 Series with Duplexer";
-    }
-}
-
-- (void)setupJob
-{
-    _printjob = [OCPrintJob new];
-    _printjob.dest = _printer.name;
 }
 
 @end

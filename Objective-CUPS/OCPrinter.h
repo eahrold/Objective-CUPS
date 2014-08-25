@@ -74,7 +74,10 @@ based on the model*/
 @property (weak, nonatomic, readonly) NSArray *jobs;
 
 /**full uri for cups dest*/
-@property (copy, nonatomic) NSString *url;
+@property (copy, nonatomic) NSString *url __deprecated;
+
+/**full uri for cups dest*/
+@property (copy, nonatomic) NSString *uri;
 
 #pragma mark - Methods
 /**
