@@ -27,8 +27,6 @@
 		BE26D3ED1890CC3900DD31AB /* libcups.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3EC1890CC3900DD31AB /* libcups.dylib */; };
 		BE26D3EE1890CC4A00DD31AB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3801890685900DD31AB /* libz.dylib */; };
 		BE26D3EF1890CC9B00DD31AB /* libcups.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3EC1890CC3900DD31AB /* libcups.dylib */; };
-		BE26D3F01890CCA300DD31AB /* libcups.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3EC1890CC3900DD31AB /* libcups.dylib */; };
-		BE26D3F11890CCA600DD31AB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3801890685900DD31AB /* libz.dylib */; };
 		BE32CE1618C18A3E00DEE757 /* OCPrinter_Validator.h in Headers */ = {isa = PBXBuildFile; fileRef = BE503D9718BF970200C84357 /* OCPrinter_Validator.h */; };
 		BE42458718C63EE300B527B9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE42458018C63EB800B527B9 /* Foundation.framework */; };
 		BE42458A18C63EE300B527B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE42458918C63EE300B527B9 /* main.m */; };
@@ -136,8 +134,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEE0A0B018BF8D6A000AAB2B /* Foundation.framework in Frameworks */,
-				BE26D3F01890CCA300DD31AB /* libcups.dylib in Frameworks */,
-				BE26D3F11890CCA600DD31AB /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
