@@ -59,10 +59,10 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
         _description = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"description"];
         _ppd = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"ppd"];
         _ppd_url = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"ppd_url"];
-
         _model = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"model"];
         _protocol = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"protocol"];
         _url = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"url"];
+        _uri = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"uri"];
         _host = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"host"];
         _options = [aDecoder decodeObjectOfClasses:whiteList forKey:@"options"];
     }
@@ -82,6 +82,7 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
     [aEncoder encodeObject:_model forKey:@"model"];
     [aEncoder encodeObject:_protocol forKey:@"protocol"];
     [aEncoder encodeObject:_url forKey:@"url"];
+    [aEncoder encodeObject:_uri forKey:@"uri"];
     [aEncoder encodeObject:_host forKey:@"host"];
     [aEncoder encodeObject:_options forKey:@"options"];
 }
