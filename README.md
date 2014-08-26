@@ -4,7 +4,7 @@ The OCPrinter object conforms to NSSecureCoding to be used
 with a NSXPC Service and priviledged helper tool so non-admin users can manage printers themselves.
 
 ####Add / Remove OCPrinter
-``` Objective-c
+```Objective-C
 NSError *error;
 
 // set up a printer
@@ -16,8 +16,8 @@ printer.description = @"LaserJet";
 printer.model = @"HP LaserJet 4250";
 
 // add it
-OCManager *manager = [CUPSManager new]
-[manager addPrinter:printer error:&error]
+OCManager *manager = [OCManager alloc] init];
+[manager addPrinter:printer error:&error];
 
 // remove it
 [manager removePrinter:printer.name error:&error];
@@ -28,8 +28,8 @@ OCManager *manager = [CUPSManager new]
 
 ####Print file
 Print file and monitor via Block...
-``` Objective-c
-[_manager sendFile:@"/tmp/test.txt" toPrinter:_printer.name failure:^(NSError *error) {
+```Objective-C
+[manager sendFile:@"/tmp/test.txt" toPrinter:printer.name failure:^(NSError *error) {
     NSLog(@"%@",error.localizedDescription);
 } watch:^(NSString *status, NSInteger jobID) {
     NSLog(@"%@",status);
