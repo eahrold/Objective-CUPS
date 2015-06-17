@@ -217,12 +217,17 @@
 		BE26D32F188F1A7F00DD31AB /* Objective-CUPS */ = {
 			isa = PBXGroup;
 			children = (
+				BEE7AE0218C4C79D00F61EFA /* Objective-CUPS.h */,
 				BEE7AE0118C4C76E00F61EFA /* PrivateHeaders */,
-				BEE7AE0318C4C7A600F61EFA /* PublicHeaders */,
+				BECC149618BE7E300012B016 /* OCManager.h */,
 				BECC149718BE7E300012B016 /* OCManager.m */,
+				BE26D2D1188F168300DD31AB /* OCPrinter.h */,
 				BE26D2D2188F168300DD31AB /* OCPrinter.m */,
+				BE26D2CF188F168300DD31AB /* OCPrintJob.h */,
 				BE26D2D0188F168300DD31AB /* OCPrintJob.m */,
+				BE26D2D3188F168300DD31AB /* OCError.h */,
 				BE26D2D4188F168300DD31AB /* OCError.m */,
+				BEE7AE0818C53CEA00F61EFA /* OCPrinterUtility.h */,
 				BEE7AE0718C53CEA00F61EFA /* OCPrinterUtility.m */,
 				BE26D330188F1A7F00DD31AB /* Supporting Files */,
 			);
@@ -278,21 +283,8 @@
 			children = (
 				BEE64D2319150ECA00F1A3BB /* OCPrinter_Private.h */,
 				BE503D9718BF970200C84357 /* OCPrinter_Validator.h */,
-				BE26D2D3188F168300DD31AB /* OCError.h */,
-				BEE7AE0818C53CEA00F61EFA /* OCPrinterUtility.h */,
 			);
 			name = PrivateHeaders;
-			sourceTree = "<group>";
-		};
-		BEE7AE0318C4C7A600F61EFA /* PublicHeaders */ = {
-			isa = PBXGroup;
-			children = (
-				BEE7AE0218C4C79D00F61EFA /* Objective-CUPS.h */,
-				BECC149618BE7E300012B016 /* OCManager.h */,
-				BE26D2D1188F168300DD31AB /* OCPrinter.h */,
-				BE26D2CF188F168300DD31AB /* OCPrintJob.h */,
-			);
-			name = PublicHeaders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -408,7 +400,7 @@
 		BE26D29D188F163D00DD31AB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Loyola University New Orleans";
 				TargetAttributes = {
 					BE26D3D11890C83600DD31AB = {
@@ -563,7 +555,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -594,7 +586,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -615,7 +607,7 @@
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -633,7 +625,7 @@
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -653,7 +645,7 @@
 				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -668,7 +660,7 @@
 				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -690,7 +682,7 @@
 				INFOPLIST_FILE = "Objective_CUPSTests/Objective_CUPSTests-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -710,7 +702,7 @@
 				INFOPLIST_FILE = "Objective_CUPSTests/Objective_CUPSTests-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -727,7 +719,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -738,7 +730,7 @@
 				GCC_PREFIX_HEADER = "test-cli/test-cli-Prefix.pch";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};

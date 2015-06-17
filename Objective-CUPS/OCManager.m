@@ -36,12 +36,15 @@
 #import <zlib.h>
 #import <syslog.h>
 
+#pragma mark - PrintJobMonitor
 @interface OCManager () <PrintJobMonitor>
+
 @property (weak, nonatomic, readwrite) void (^jobStatus)(NSString *status, NSInteger jobID);
+
 @end
 
-@implementation OCManager {
-}
+#pragma mark - OCManager
+@implementation OCManager
 
 - (void)dealloc
 {
@@ -59,13 +62,16 @@
 {
     static dispatch_once_t onceToken;
     static OCManager *shared;
+
     dispatch_once(&onceToken, ^{
         shared = [OCManager new];
     });
+
     return shared;
 }
 
 #pragma mark - Add Printer
+
 - (BOOL)addPrinter:(OCPrinter *)printer
 {
     return [self addPrinter:printer error:nil];
@@ -119,7 +125,7 @@
     if ((finalppd = writeOptionsToPPD(options, num_options, printer.ppd_tempfile.UTF8String, error)) == NULL) {
         return NO;
     }
-
+    
     ippAddInteger(request, IPP_TAG_PRINTER, IPP_TAG_ENUM, "printer-state", IPP_PRINTER_IDLE);
     ippAddBoolean(request, IPP_TAG_PRINTER, "printer-is-accepting-jobs", 1);
 
@@ -133,6 +139,7 @@
 }
 
 #pragma mark - Add Options
+
 - (BOOL)addOption:(NSArray *)opt toPrinter:(NSString *)printer
 {
     return [self addOptions:@[ opt ] toPrinter:printer];
@@ -253,6 +260,7 @@
 }
 
 #pragma mark - Remove Printer
+
 - (BOOL)removePrinter:(NSString *)printer
 {
     return [self removePrinter:printer error:nil];
@@ -282,6 +290,7 @@
 }
 
 #pragma mark - Jobs
+
 - (BOOL)cancelJobsOnPrinter:(NSString *)printer
 {
     return [self cancelJobsOnPrinter:printer error:nil];
@@ -301,6 +310,7 @@
 }
 
 #pragma mark - Enable / Disable
+
 - (BOOL)enablePrinter:(NSString *)printer
 {
     return [self enablePrinter:printer error:nil];
@@ -344,10 +354,12 @@
 }
 
 #pragma mark - Printing
+
 - (OCPrintJob *)sendFileAtURL:(NSURL *)file toPrinter:(NSString *)printer
 {
     return [self sendFileAtURL:file toPrinter:printer error:nil];
 }
+
 - (OCPrintJob *)sendFileAtURL:(NSURL *)file toPrinter:(NSString *)printer error:(NSError *__autoreleasing *)error
 {
     return [self sendFile:file.path toPrinter:printer error:error];

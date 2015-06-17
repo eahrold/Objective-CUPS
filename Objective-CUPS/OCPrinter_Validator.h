@@ -24,6 +24,22 @@
 #import "Objective-CUPS.h"
 
 @interface OCPrinter ()
+
+/**
+ *  Test if printer name conforms to CUPS criteria
+ *
+ *  @param error Populated NSError Object should error occur
+ *
+ *  @return YES if name is valid, otherwise NO
+ */
 - (BOOL)nameIsValid:(NSError **)error;
+
+/**
+ *  <#Description#>
+ *
+ *  @param error <#error description#>
+ *
+ *  @return <#return value description#>
+ */
 - (BOOL)configurePPD:(NSError **)error;
 @end

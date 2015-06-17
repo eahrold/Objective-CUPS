@@ -26,20 +26,44 @@
 
 #import <Foundation/Foundation.h>
 
-/**Class for Adding, Removing & Modifying CUPS Printers*/
+
+typedef NS_ENUM(NSInteger, OCPrinterDefaultPorts) {
+    kOCPrinterPortAutoDetect = -1,
+    kOCPrinterPortIPP = 631,
+    kOCPrinterPortIPPS = 631,
+    kOCPrinterPortHTTP = 631,
+    kOCPrinterPortHTTPS = 631,
+    kOCPrinterPortSocket = 9100,
+    kOCPrinterPortLPD = 515,
+    kOCPrinterPortSMBTCP = 445,
+    kOCPrinterPortSMBUDP = 139,
+};
+
+// String constants representing common printer protocols.
+extern NSString *const kOCProtocolIPP; // IPP
+extern NSString *const kOCProtocolIPPS; // IPPS
+extern NSString *const kOCProtocolHTTP; // HTTP
+extern NSString *const kOCProtocolHTTPS; // HTTPS
+extern NSString *const kOCProtocolLPD; // LPD
+extern NSString *const kOCProtocolSocket; // Socket
+extern NSString *const kOCProtocolSMB; // SMB
+extern NSString *const kOCProtocolDNSSD; // DNSSD
+
+/** Class for Adding, Removing & Modifying CUPS Printers */
 @interface OCPrinter : NSObject
 #pragma mark - Properties
 
-/**CUPS compliant name for a printer destination*/
+/** CUPS compliant name for a printer destination */
 @property (copy, nonatomic) NSString *name;
 
-/**FQDN or IP address to the CUPS Server or Printer */
+/** FQDN or IP address to the CUPS Server or Printer */
 @property (copy, nonatomic) NSString *host;
 
-/** An approperiate protocol for the printer.
-    @note Currently avaliabel protocols are: ipp, http, https, socket, lpd, dnssd
- */
-@property (copy, nonatomic) NSString *protocol;
+/** An approperiate protocol for the printer. */
+@property (copy, nonatomic) NSString * protocol;
+
+/** An port for the printer. If unspecfied, the default port for the protocol is used. */
+@property (assign, nonatomic) NSInteger port;
 
 /**A human readable description of the printer */
 @property (copy, nonatomic) NSString *description;
@@ -53,7 +77,7 @@
 /**path to raw ppd file either .gz or .ppd */
 @property (copy, nonatomic) NSString *ppd;
 
-/** path where a PPD file can be download*/
+/** path where a PPD file can be download */
 @property (copy, nonatomic) NSString *ppd_url;
 
 /** Array of options that use the lpoptions structure (e.g Option=Value).  
@@ -62,7 +86,7 @@
 
 /** Array of options that can get applied to the printer 
 based on the model*/
-@property (weak, nonatomic, readonly) NSArray *avaliableOptions;
+@property (weak, nonatomic, readonly) NSArray *availableOptions;
 
 /**current numeric state of printer */
 @property (nonatomic, readonly) OSStatus status;
@@ -74,7 +98,7 @@ based on the model*/
 @property (weak, nonatomic, readonly) NSArray *jobs;
 
 /**full uri for cups dest*/
-@property (copy, nonatomic) NSString *url __deprecated;
+@property (copy, nonatomic) NSString *url __deprecated_msg("Use uri");
 
 /**full uri for cups dest*/
 @property (copy, nonatomic) NSString *uri;

@@ -39,32 +39,80 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
     PPD_FROM_CUPS_SERVER = 1,
 };
 
-@implementation OCPrinter
+typedef NS_ENUM(NSInteger, OCPrinterHostType) {
+    kOCUndefinedHostType,
+    kOCPrinterHostTypeIPP = 1 << 0, // IPP
+    kOCPrinterHostTypeIPPS = 1 << 1, // IPPS
+    kOCPrinterHostTypeHTTP = 1 << 2, // HTTP
+    kOCPrinterHostTypeHTTPS = 1 << 3, // HTTPS
+    kOCPrinterHostTypeLPD = 1 << 4, // LPD
+    kOCPrinterHostTypeSocket = 1 << 5, // Socket
+    kOCPrinterHostTypeSMB = 1 << 6, // SMB
+    kOCPrinterHostTypeDNSSD = 1 << 7, // DNS_SD
+};
+
+NSString *const kOCProtocolIPP = @"ipp"; // IPP
+NSString *const kOCProtocolIPPS = @"ipps"; // IPPS
+NSString *const kOCProtocolHTTP = @"http"; // HTTP
+NSString *const kOCProtocolHTTPS = @"https"; // HTTPS
+NSString *const kOCProtocolLPD = @"lpd"; // LPD
+NSString *const kOCProtocolSocket = @"socket"; // Socket
+NSString *const kOCProtocolSMB = @"smb"; // SMB
+NSString *const kOCProtocolDNSSD = @"dnssd"; // DNSSD
+
+@implementation OCPrinter {
+    @private
+    OCPrinterHostType _hostType;
+}
+
 // Since this overrides the standard NSObject description property, manually synthesize it
 @synthesize description = _description;
 
 #pragma mark - Initializers / Secure Coding
+
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super init];
-    if (self) {
+    if ( self = [super init]) {
         NSSet *whiteList = [NSSet setWithObjects:[NSDictionary class],
                                                  [NSString class],
                                                  [NSArray class],
                                                  nil];
 
-        _name = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"];
-        _host = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"host"];
-        _location = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"location"];
-        _description = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"description"];
-        _ppd = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"ppd"];
-        _ppd_url = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"ppd_url"];
-        _model = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"model"];
-        _protocol = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"protocol"];
-        _url = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"url"];
-        _uri = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"uri"];
-        _host = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"host"];
-        _options = [aDecoder decodeObjectOfClasses:whiteList forKey:@"options"];
+        _name = [aDecoder decodeObjectOfClass:[NSString class]
+                                       forKey:NSStringFromSelector(@selector(name))];
+
+        _host = [aDecoder decodeObjectOfClass:[NSString class]
+                                       forKey:NSStringFromSelector(@selector(host))];
+
+        _location = [aDecoder decodeObjectOfClass:[NSString class]
+                                           forKey:NSStringFromSelector(@selector(location))];
+
+        _description = [aDecoder decodeObjectOfClass:[NSString class]
+                                              forKey:NSStringFromSelector(@selector(description))];
+
+        _ppd = [aDecoder decodeObjectOfClass:[NSString class]
+                                      forKey:NSStringFromSelector(@selector(ppd))];
+
+        _ppd_url = [aDecoder decodeObjectOfClass:[NSString class]
+                                          forKey:NSStringFromSelector(@selector(ppd_url))];
+
+        _model = [aDecoder decodeObjectOfClass:[NSString class]
+                                        forKey:NSStringFromSelector(@selector(model))];
+
+        _protocol = [aDecoder decodeObjectOfClass:[NSString class]
+                                           forKey:NSStringFromSelector(@selector(protocol))];
+
+        _url = [aDecoder decodeObjectOfClass:[NSString class]
+                                      forKey:NSStringFromSelector(@selector(url))];
+
+        _uri = [aDecoder decodeObjectOfClass:[NSString class]
+                                      forKey:NSStringFromSelector(@selector(uri))];
+
+        _host = [aDecoder decodeObjectOfClass:[NSString class]
+                                       forKey:NSStringFromSelector(@selector(host))];
+
+        _options = [aDecoder decodeObjectOfClasses:whiteList
+                                            forKey:NSStringFromSelector(@selector(options))];
     }
     return self;
 }
@@ -73,24 +121,46 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
 
 - (void)encodeWithCoder:(NSCoder *)aEncoder
 {
-    [aEncoder encodeObject:_name forKey:@"name"];
-    [aEncoder encodeObject:_host forKey:@"host"];
-    [aEncoder encodeObject:_location forKey:@"location"];
-    [aEncoder encodeObject:_description forKey:@"description"];
-    [aEncoder encodeObject:_ppd forKey:@"ppd"];
-    [aEncoder encodeObject:_ppd_url forKey:@"ppd_url"];
-    [aEncoder encodeObject:_model forKey:@"model"];
-    [aEncoder encodeObject:_protocol forKey:@"protocol"];
-    [aEncoder encodeObject:_url forKey:@"url"];
-    [aEncoder encodeObject:_uri forKey:@"uri"];
-    [aEncoder encodeObject:_host forKey:@"host"];
-    [aEncoder encodeObject:_options forKey:@"options"];
+    [aEncoder encodeObject:_name
+                    forKey:NSStringFromSelector(@selector(name))];
+
+    [aEncoder encodeObject:_host
+                    forKey:NSStringFromSelector(@selector(host))];
+
+    [aEncoder encodeObject:_location
+                    forKey:NSStringFromSelector(@selector(location))];
+
+    [aEncoder encodeObject:_description
+                    forKey:NSStringFromSelector(@selector(description))];
+
+    [aEncoder encodeObject:_ppd
+                    forKey:NSStringFromSelector(@selector(ppd))];
+
+    [aEncoder encodeObject:_ppd_url
+                    forKey:NSStringFromSelector(@selector(ppd_url))];
+
+    [aEncoder encodeObject:_model
+                    forKey:NSStringFromSelector(@selector(model))];
+
+    [aEncoder encodeObject:_protocol
+                    forKey:NSStringFromSelector(@selector(protocol))];
+
+    [aEncoder encodeObject:_url
+                    forKey:NSStringFromSelector(@selector(url))];
+
+    [aEncoder encodeObject:_uri
+                    forKey:NSStringFromSelector(@selector(uri))];
+
+    [aEncoder encodeObject:_host
+                    forKey:NSStringFromSelector(@selector(host))];
+
+    [aEncoder encodeObject:_options
+                    forKey:NSStringFromSelector(@selector(options))];
 }
 
 - (id)initWithDictionary:(NSDictionary *)dict
 {
-    self = [super init];
-    if (self) {
+    if (self = [super init]) {
         [self setValuesForKeysWithDictionary:dict];
     }
     return self;
@@ -99,49 +169,117 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
 - (void)dealloc
 {
     NSFileManager *fm = [NSFileManager defaultManager];
+    
     if ([fm fileExistsAtPath:self.ppd_tempfile])
         [fm removeItemAtPath:self.ppd_tempfile error:nil];
 }
 
 #pragma mark - Accessors
+#pragma mark -- Setters
+- (void)setProtocol:(NSString *)protocol {
+    _protocol = protocol;
+    _hostType = 0;
+    // Setup the hostType enum for more concise compairsons.
+    if ([protocol isEqualToString:kOCProtocolIPP]) {
+        _hostType = kOCPrinterHostTypeIPP;
+    } else if ([protocol isEqualToString:kOCProtocolIPPS]) {
+        _hostType = kOCPrinterHostTypeIPPS;
+    }  else if ([protocol isEqualToString:kOCProtocolHTTP]) {
+        _hostType = kOCPrinterHostTypeHTTP;
+    } else if ([protocol isEqualToString:kOCProtocolHTTPS]) {
+        _hostType = kOCPrinterHostTypeHTTPS;
+    } else if ([protocol isEqualToString:kOCProtocolLPD]) {
+        _hostType = kOCPrinterHostTypeLPD;
+    } else if ([protocol isEqualToString:kOCProtocolSocket]) {
+        _hostType = kOCPrinterHostTypeSocket;
+    } else if ([protocol isEqualToString:kOCProtocolSMB]) {
+        _hostType = kOCPrinterHostTypeSMB;
+    } else if ([protocol isEqualToString:kOCProtocolDNSSD]) {
+        _hostType = kOCPrinterHostTypeDNSSD;
+    }
+}
+#pragma mark -- Getters
+
 - (NSString *)url
 {
     return self.uri;
 }
 
-- (NSString *)uri
-{
-    if (_uri) {
-        return _uri;
-    }
+- (NSString *)uri {
+    if (!_uri) {
+        if (!_name || !_protocol || !_host) {
+            NSLog(@"%@", [NSString stringWithFormat:@"Values Cannot be nil printer:%@ protocol:%@ host:%@", _name, _protocol, _host]);
+            return nil;
+        }
+        NSString *uri = nil;
+        // ipp and ipps for connecting to CUPS server
+        NSString *hostString = [self hostString];
 
-    if (!_name || !_protocol || !_host) {
-        NSLog(@"%@", [NSString stringWithFormat:@"Values Cannot be nil printer:%@ protocol:%@ host:%@", _name, _protocol, _host]);
-        return nil;
+        switch (_hostType) {
+            case kOCPrinterHostTypeIPP:
+            case kOCPrinterHostTypeIPPS: {
+                uri = [NSString stringWithFormat:@"%@://%@/printers/%@", _protocol, hostString, _name];
+                break;
+            }
+            case kOCPrinterHostTypeHTTP:
+            case kOCPrinterHostTypeHTTPS: {
+                uri = [NSString stringWithFormat:@"%@://%@/printers/%@", _protocol, hostString, _name];
+                break;
+            }
+            case kOCPrinterHostTypeLPD: {
+                uri = [NSString stringWithFormat:@"%@://%@", _protocol, hostString];
+                break;
+            }
+            case kOCPrinterHostTypeSocket: {
+                uri = [NSString stringWithFormat:@"%@://%@:9100", _protocol, hostString];
+                break;
+            }
+            case kOCPrinterHostTypeSMB: {
+                uri = [NSString stringWithFormat:@"%@://%@/%@", _protocol, hostString, _name];
+                break;
+            }
+            case kOCPrinterHostTypeDNSSD: {
+                uri = [NSString stringWithFormat:@"%@://%@._pdl-datastream._tcp.local./?bidi", _protocol, hostString];
+                break;
+            }
+            case kOCUndefinedHostType:
+            default: {
+                NSLog(@"Improper uri Format");
+                break;
+            }
+        }
+        _uri =  [uri stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     }
+    return _uri;
+}
 
-    // ipp and ipps for connecting to CUPS server
-    if ([_protocol isEqualToString:@"ipp"] || [_protocol isEqualToString:@"ipps"]) {
-        _uri = [NSString stringWithFormat:@"%@://%@/printers/%@", _protocol, _host, _name];
+- (NSInteger)port {
+    if (!_port) {
+        switch (_hostType) {
+            case kOCPrinterHostTypeHTTP: {
+                _port = kOCPrinterPortHTTP;
+                break;
+            }
+            case kOCPrinterHostTypeHTTPS: {
+                _port = kOCPrinterPortHTTPS;
+                break;
+            }
+            case kOCPrinterHostTypeSocket: {
+                _port = kOCPrinterPortSocket;
+                break;
+            }
+            case kOCPrinterHostTypeIPP:
+            case kOCPrinterHostTypeIPPS:
+            case kOCPrinterHostTypeLPD:
+            case kOCPrinterHostTypeSMB:
+            case kOCPrinterHostTypeDNSSD:
+            default: {
+                _port = kOCPrinterPortAutoDetect;
+                break;
+            }
+        }
     }
-    // http and https for connecting to CUPS server
-    else if ([_protocol isEqualToString:@"http"] || [_protocol isEqualToString:@"https"]) {
-        _uri = [NSString stringWithFormat:@"%@://%@:631/printers/%@", _protocol, _host, _name];
-    }
-    // socket for connecting to AppSocket
-    else if ([_protocol isEqualToString:@"socket"]) {
-        _uri = [NSString stringWithFormat:@"%@://%@:9100", _protocol, _host];
-    } else if ([_protocol isEqualToString:@"lpd"]) {
-        _uri = [NSString stringWithFormat:@"%@://%@", _protocol, _host];
-    } else if ([_protocol isEqualToString:@"smb"]) {
-        _uri = [NSString stringWithFormat:@"%@://%@/%@", _protocol, _host, _name];
-    } else if ([_protocol isEqualToString:@"dnssd"]) {
-        _uri = [NSString stringWithFormat:@"%@://%@._pdl-datastream._tcp.local./?bidi", _protocol, _host];
-    } else {
-        NSLog(@"Improper uri Format");
-        return NO;
-    }
-    return [_uri stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    return _port;
 }
 
 - (NSString *)host
@@ -151,10 +289,10 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
 
 - (NSString *)ppd
 {
-    if (_ppd)
-        return _ppd;
-    else
-        return [[OCManager ppdsForModel:_model] lastObject];
+    if (!_ppd){
+        _ppd = [[OCManager ppdsForModel:_model] lastObject];
+    }
+    return _ppd;
 }
 
 - (NSString *)ppd_tempfile
@@ -195,8 +333,7 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
 
 - (NSString *)statusMessage
 {
-    OSStatus status = self.status;
-    switch (status) {
+    switch (self.status) {
     case IPP_PRINTER_IDLE:
         _statusMessage = @"Idle";
         break;
@@ -213,7 +350,7 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
     return _statusMessage;
 }
 
-- (NSArray *)avaliableOptions
+- (NSArray *)availableOptions
 {
     NSArray *opts = nil;
 #pragma clang diagnostic push
@@ -230,18 +367,29 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
 
 #pragma mark - Private
 
+- (NSString *)hostString {
+    NSInteger port = self.port;
+    NSMutableString *string = self.host.mutableCopy;
+    if (port && (port != kOCPrinterPortAutoDetect)) {
+        [string appendFormat:@":%ld", (long)port];
+    }
+    return string.copy;
+}
+
 - (BOOL)configurePPD:(NSError *__autoreleasing *)error
 {
     NSString *path;
 
     // Check if we can find a match locally...
     NSString *localPPD = self.ppd;
+
     if (localPPD) {
         NSFileManager *fm = [NSFileManager defaultManager];
         if ([fm fileExistsAtPath:localPPD]) {
             // If the file exists remove it so we can get a new one.
-            if ([fm fileExistsAtPath:self.ppd_tempfile])
+            if ([fm fileExistsAtPath:self.ppd_tempfile]) {
                 [fm removeItemAtPath:self.ppd_tempfile error:nil];
+            }
 
             if ([fm copyItemAtPath:localPPD toPath:self.ppd_tempfile error:nil]) {
                 return YES;
@@ -249,7 +397,7 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
         }
     }
 
-    // if not local, try and get if from the printer-installer-server
+    // If not local, try and get if from a specified URL
     if (_ppd_url) {
         path = [_ppd_url stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
         if ([self downloadPPD:[NSURL URLWithString:path] mode:PPD_FROM_URL]) {
@@ -257,13 +405,14 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
         }
     }
 
-    // otherwise, if it's getting shared via ipp, try to grab it from the CUPS server
-    if ([_protocol isEqualToString:@"ipp"]) {
+    // Otherwise, if it's getting shared via ipp, try to grab it from the CUPS server
+    if (_hostType & ( kOCPrinterHostTypeIPP | kOCPrinterHostTypeIPPS)) {
         path = [NSString stringWithFormat:@"http://%@:631/printers/%@.ppd", _host, _name];
         if ([self downloadPPD:[NSURL URLWithString:path] mode:PPD_FROM_CUPS_SERVER]) {
             return YES;
         }
     }
+
     // if we still don't have it error out
     return [OCError errorWithCode:kPrinterErrorPPDNotFound error:error];
 }
@@ -313,7 +462,7 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
 {
     int CHUNK = 0x1000;
     unsigned char buffer[CHUNK];
-    gzFile file = gzopen([inPath UTF8String], "r");
+    gzFile file = gzopen(inPath.UTF8String, "r");
     NSMutableData *bufferData = [[NSMutableData alloc] init];
 
     while (1) {
@@ -357,7 +506,7 @@ typedef NS_ENUM(NSInteger, ppdDownloadModes) {
     /*
      * All the characters are good; validate the length, too...
      */
-    if ((ptr - name) > 127) {
+    if (_name.length > 127) {
         [OCError errorWithCode:kPrinterErrorNameTooLong error:error];
         return NO;
     }

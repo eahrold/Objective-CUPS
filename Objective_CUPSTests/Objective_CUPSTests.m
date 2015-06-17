@@ -26,6 +26,9 @@
 
 #import <XCTest/XCTest.h>
 #import "Objective-CUPS.h"
+#import <cups/cups.h>
+
+static NSString *const _tmpFile = @"/tmp/test.txt";
 
 @interface Objective_CUPSTests : XCTestCase
 
@@ -43,6 +46,9 @@
     [super setUp];
     [self setUpPrinter];
     _manager = [OCManager sharedManager];
+
+    [[@"Hello World !" dataUsingEncoding:NSUTF8StringEncoding] writeToFile:_tmpFile atomically:YES];
+
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
@@ -51,8 +57,8 @@
     if (!_printer) {
         _printer = [OCPrinter new];
         _printer.name = @"laserjet";
-        _printer.host = @"nowhere";
-        _printer.protocol = @"ipp";
+        _printer.host = @"pretendco.com";
+        _printer.protocol = kOCProtocolHTTPS;
         _printer.description = @"LaserJet";
         _printer.model = @"HP Color LaserJet CP5220 Series with Duplexer";
     }
@@ -72,6 +78,7 @@
 
 - (void)testAll;
 {
+
     [self testAddPrinter];
     [self testAddOption];
     [self testStatus];
@@ -79,6 +86,29 @@
     [self testCancelJob];
     [self testPrintJobAndWatch];
     [self testRemovePrinter];
+}
+
+- (void)testGetPPD
+{
+    http_t *server = NULL;
+
+    server = httpConnect("mdm.masscomm.loyno.edu", 631);
+
+    time_t now;
+    http_status_t status;
+    char * buffer;
+
+
+    buffer = (char*) malloc (MAXPATHLEN);
+    status = cupsGetPPD3(server, "bw324", &now, buffer, MAXPATHLEN);
+    if(status != HTTP_STATUS_ERROR){
+        NSString *path = [NSString stringWithUTF8String:buffer].stringByStandardizingPath;
+        NSLog(@"Found file %@", path);
+    } else {
+        NSLog(@"%s", cupsLastErrorString());
+    }
+    free(buffer);
+
 }
 
 - (void)testAddPrinter
@@ -90,7 +120,7 @@
 
 - (void)testAvaliableOptions
 {
-    NSLog(@"%@", [_printer avaliableOptions]);
+    NSLog(@"%@", [_printer availableOptions]);
 }
 
 - (void)testAddOption
@@ -114,14 +144,14 @@
 {
     NSError *error;
     [self setupJob];
-    [_printjob addFiles:@[ @"/tmp/test.txt", @"/tmp/test.txt" ]];
+    [_printjob addFiles:@[ _tmpFile ]];
     sleep(1);
     XCTAssertTrue([_printjob submit:&error], @"Print Job Error: %@", error);
 }
 
 - (void)testCancelJob
 {
-    XCTAssertTrue([OCPrintJob cancelJobNamed:@"test.txt"], @"Cancel Job Error");
+    XCTAssertTrue([OCPrintJob cancelJobNamed:_tmpFile.lastPathComponent], @"Cancel Job Error");
 }
 
 - (void)testCancelJobOnPrinter
@@ -142,17 +172,30 @@
         NSLog(@"ppd for printer %@ : %@", p.name, p.ppd);
     }
 }
+
 - (void)testPrintJobAndWatch
 {
-    [_manager sendFile:@"/tmp/test.txt" toPrinter:_printer.name failure:^(NSError *error) {
+    XCTestExpectation *expect = [self expectationWithDescription:@"watch"];
+
+    [_manager sendFile:_tmpFile toPrinter:_printer.name failure:^(NSError *error) {
         XCTAssertNil(error, @"Problem Printing: %@",error.localizedDescription);
         NSLog(@"%@",error.localizedDescription);
         i=5;
     } watch:^(NSString *status, NSInteger jobID) {
-        NSLog(@"%@ count:%d",status,i);
+        NSLog(@"%@ count:%d", status, i);
         i++;
-        if (i > 5)
-            [OCPrintJob cancelJobWithID:jobID];
+        if (i > 5){
+            if ([OCPrintJob cancelJobWithID:jobID]) {
+                [expect fulfill];
+            };
+        }
+    }];
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
     }];
 }
 

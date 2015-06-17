@@ -9,8 +9,12 @@
 #import <Foundation/Foundation.h>
 @interface OCPrinter () <NSSecureCoding>
 @property (nonatomic, readwrite) OSStatus status;
+
 @property (copy, nonatomic) NSString *ppd_tempfile;
-@property (weak, nonatomic, readwrite) NSArray *avaliableOptions;
+
+@property (weak, nonatomic, readwrite) NSArray *availableOptions;
+
 @property (weak, nonatomic, readwrite) NSString *statusMessage;
+
 @property (weak, nonatomic, readwrite) NSArray *jobs;
 @end

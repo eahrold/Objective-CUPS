@@ -25,6 +25,7 @@
 //
 
 #import <Foundation/Foundation.h>
+
 @class OCPrintJob;
 
 @protocol PrintJobMonitor <NSObject>
