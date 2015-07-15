@@ -25,7 +25,8 @@
 //
 
 #import <Foundation/Foundation.h>
-@class OCPrinter, OCPrintJob;
+#import "OCPrinter.h"
+#import "OCPrintJob.h"
 
 /**
  *  Interface to the CUPS system 
@@ -44,6 +45,7 @@
  */
 - (BOOL)addPrinter:(OCPrinter *)printer;
 - (BOOL)addPrinter:(OCPrinter *)printer error:(NSError **)error;
+- (void)addPrinter:(OCPrinter *)printer reply:(void (^)(NSError *error))reply;
 
 /**
  remove a Printer
@@ -53,6 +55,7 @@
  */
 - (BOOL)removePrinter:(NSString *)printer;
 - (BOOL)removePrinter:(NSString *)printer error:(NSError **)error;
+- (void)removePrinter:(NSString *)printer reply:(void (^)(NSError *error))reply;
 
 #pragma mark - Options
 /**

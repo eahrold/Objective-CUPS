@@ -27,6 +27,7 @@
 #import <XCTest/XCTest.h>
 #import "Objective-CUPS.h"
 #import <cups/cups.h>
+#import <AppKit/NSPrinter.h>
 
 static NSString *const _tmpFile = @"/tmp/test.txt";
 
@@ -58,7 +59,7 @@ static NSString *const _tmpFile = @"/tmp/test.txt";
         _printer = [OCPrinter new];
         _printer.name = @"laserjet";
         _printer.host = @"pretendco.com";
-        _printer.protocol = kOCProtocolHTTPS;
+        _printer.protocol = kOCProtocolIPP;
         _printer.description = @"LaserJet";
         _printer.model = @"HP Color LaserJet CP5220 Series with Duplexer";
     }
@@ -86,29 +87,6 @@ static NSString *const _tmpFile = @"/tmp/test.txt";
     [self testCancelJob];
     [self testPrintJobAndWatch];
     [self testRemovePrinter];
-}
-
-- (void)testGetPPD
-{
-    http_t *server = NULL;
-
-    server = httpConnect("mdm.masscomm.loyno.edu", 631);
-
-    time_t now;
-    http_status_t status;
-    char * buffer;
-
-
-    buffer = (char*) malloc (MAXPATHLEN);
-    status = cupsGetPPD3(server, "bw324", &now, buffer, MAXPATHLEN);
-    if(status != HTTP_STATUS_ERROR){
-        NSString *path = [NSString stringWithUTF8String:buffer].stringByStandardizingPath;
-        NSLog(@"Found file %@", path);
-    } else {
-        NSLog(@"%s", cupsLastErrorString());
-    }
-    free(buffer);
-
 }
 
 - (void)testAddPrinter

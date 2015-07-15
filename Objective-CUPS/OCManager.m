@@ -25,22 +25,29 @@
 //
 
 #import "OCManager.h"
-#import "OCPrinter.h"
 #import "OCPrinter_Private.h"
-#import "OCPrintJob.h"
 #import "OCError.h"
 #import "OCPrinter_Validator.h"
 #import "OCPrinterUtility.h"
+
 #import <cups/cups.h>
 #import <cups/ppd.h>
 #import <zlib.h>
 #import <syslog.h>
 
 #pragma mark - PrintJobMonitor
+static dispatch_queue_t objective_cups_printer_modify_queue()
+{
+    static dispatch_queue_t queue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        queue = dispatch_queue_create("com.eeaapps.objective-cups.printer.modify.queue", DISPATCH_QUEUE_SERIAL );
+    });
+    return queue;
+}
+
 @interface OCManager () <PrintJobMonitor>
-
 @property (weak, nonatomic, readwrite) void (^jobStatus)(NSString *status, NSInteger jobID);
-
 @end
 
 #pragma mark - OCManager
@@ -71,6 +78,16 @@
 }
 
 #pragma mark - Add Printer
+- (void)addPrinter:(OCPrinter *)printer reply:(void (^)(NSError *))reply
+{
+    dispatch_async(objective_cups_printer_modify_queue(), ^{
+        NSError *error = nil;
+        [self addPrinter:printer error:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            reply(error);
+        });
+    });
+}
 
 - (BOOL)addPrinter:(OCPrinter *)printer
 {
@@ -82,8 +99,9 @@
     if (![printer nameIsValid:error])
         return NO;
 
-    if (![printer configurePPD:error])
-        return NO;
+    if (!printer.ppd_tempfile) {
+        return [OCError errorWithCode:kPrinterErrorPPDNotFound error:error];
+    }
 
     ipp_t *request;
     cups_option_t *options = NULL;
@@ -125,12 +143,13 @@
     if ((finalppd = writeOptionsToPPD(options, num_options, printer.ppd_tempfile.UTF8String, error)) == NULL) {
         return NO;
     }
-    
+
     ippAddInteger(request, IPP_TAG_PRINTER, IPP_TAG_ENUM, "printer-state", IPP_PRINTER_IDLE);
     ippAddBoolean(request, IPP_TAG_PRINTER, "printer-is-accepting-jobs", 1);
 
     ippDelete(cupsDoFileRequest(CUPS_HTTP_DEFAULT, request, "/admin/", finalppd));
-    unlink(finalppd);
+
+    unlink(printer.ppd_tempfile.UTF8String);
 
     if (cupsLastError() > IPP_OK_CONFLICT) {
         return [OCError cupsError:error];
@@ -151,8 +170,7 @@
     ipp_t *request;
     char uri[HTTP_MAX_URI]; /* URI for printer/class */
 
-    const char *ppdfile,
-        *finalppd;
+    const char *ppdfile, *finalppd;
 
     BOOL rc;
     int num_options;
@@ -260,6 +278,16 @@
 }
 
 #pragma mark - Remove Printer
+- (void)removePrinter:(NSString *)printer reply:(void (^)(NSError *))reply
+{
+    dispatch_async(objective_cups_printer_modify_queue(), ^{
+        NSError *error = nil;
+        [self removePrinter:printer error:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            reply(error);
+        });
+    });
+}
 
 - (BOOL)removePrinter:(NSString *)printer
 {
@@ -406,7 +434,7 @@
         *response; /* IPP Response */
 
     ipp_attribute_t *attr; /* Current attribute */
-    const char *ppd_name; /* Filte path to the PPD*/
+    const char *ppd_name; /* File path to the PPD*/
 
     request = ippNewRequest(CUPS_GET_PPDS);
     if (model) {
@@ -446,6 +474,7 @@
                     continue;
             }
             NSString *ppd_file_path = [NSString stringWithFormat:@"/%s", ppd_name];
+
             [ppdArray addObject:ppd_file_path];
 
             if (attr == NULL)
@@ -454,7 +483,7 @@
 
         ippDelete(response);
     } else {
-        NSLog(@"Error Retreving PPD: %s", cupsLastErrorString());
+        NSLog(@"Error retrieving PPD: %s", cupsLastErrorString());
     }
 
     return ppdArray;
@@ -581,7 +610,7 @@
                 p.host = url.host;
             }
             if (uri != NULL) {
-                //do something with uri
+                // TODO: do something with uri
             }
 
             [set addObject:p];
@@ -626,7 +655,6 @@
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     if ((ppd = ppdOpenFile(file.UTF8String)) == NULL) {
         NSLog(@"%s", cupsLastErrorString());
-        unlink(file.UTF8String);
         return nil;
     }
 
@@ -653,7 +681,6 @@
 
     ppdClose(ppd);
 #pragma clang diagnostic pop
-    unlink(file.UTF8String);
     return array;
 }
 @end

@@ -40,6 +40,10 @@
 		BECC149E18BE95FE0012B016 /* OCError.h in Headers */ = {isa = PBXBuildFile; fileRef = BE26D2D3188F168300DD31AB /* OCError.h */; };
 		BECC14A418BE9AFD0012B016 /* libObjective_CUPS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D3C61890C83600DD31AB /* libObjective_CUPS.a */; };
 		BECC14A818BEA0EA0012B016 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BECC14A718BEA0EA0012B016 /* LICENSE */; };
+		BEDAFBA41B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.h in Headers */ = {isa = PBXBuildFile; fileRef = BEDAFBA21B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.h */; };
+		BEDAFBA51B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.h in Headers */ = {isa = PBXBuildFile; fileRef = BEDAFBA21B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.h */; };
+		BEDAFBA61B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDAFBA31B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.m */; };
+		BEDAFBA71B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDAFBA31B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.m */; };
 		BEE0A0AF18BF8D47000AAB2B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BEE0A0AE18BF8912000AAB2B /* README.md */; };
 		BEE0A0B018BF8D6A000AAB2B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE26D2AB188F163D00DD31AB /* Foundation.framework */; };
 		BEE64D2419150ECA00F1A3BB /* OCPrinter_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = BEE64D2319150ECA00F1A3BB /* OCPrinter_Private.h */; };
@@ -111,6 +115,8 @@
 		BECC149618BE7E300012B016 /* OCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCManager.h; sourceTree = "<group>"; };
 		BECC149718BE7E300012B016 /* OCManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCManager.m; sourceTree = "<group>"; };
 		BECC14A718BEA0EA0012B016 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		BEDAFBA21B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNetService+ObjectiveCUPS.h"; sourceTree = "<group>"; };
+		BEDAFBA31B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNetService+ObjectiveCUPS.m"; sourceTree = "<group>"; };
 		BEE0A0AE18BF8912000AAB2B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		BEE64D2319150ECA00F1A3BB /* OCPrinter_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCPrinter_Private.h; sourceTree = "<group>"; };
 		BEE7AE0218C4C79D00F61EFA /* Objective-CUPS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Objective-CUPS.h"; sourceTree = "<group>"; };
@@ -218,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				BEE7AE0218C4C79D00F61EFA /* Objective-CUPS.h */,
+				BEDAFBA81B389FEB00CCE9AC /* Categories */,
 				BEE7AE0118C4C76E00F61EFA /* PrivateHeaders */,
 				BECC149618BE7E300012B016 /* OCManager.h */,
 				BECC149718BE7E300012B016 /* OCManager.m */,
@@ -278,6 +285,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		BEDAFBA81B389FEB00CCE9AC /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				BEDAFBA21B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.h */,
+				BEDAFBA31B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		BEE7AE0118C4C76E00F61EFA /* PrivateHeaders */ = {
 			isa = PBXGroup;
 			children = (
@@ -300,6 +316,7 @@
 				BE26D3C018909E9D00DD31AB /* OCPrintJob.h in Headers */,
 				BE26D3BF18909E9800DD31AB /* OCPrinter.h in Headers */,
 				BEE64D2419150ECA00F1A3BB /* OCPrinter_Private.h in Headers */,
+				BEDAFBA41B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.h in Headers */,
 				BECC149E18BE95FE0012B016 /* OCError.h in Headers */,
 				BEE7AE0418C4C7D400F61EFA /* OCPrinter_Validator.h in Headers */,
 			);
@@ -315,6 +332,7 @@
 				BEE7AE0C18C53CEA00F61EFA /* OCPrinterUtility.h in Headers */,
 				BE26D3E91890C8FB00DD31AB /* OCPrinter.h in Headers */,
 				BEE64D2519150ECA00F1A3BB /* OCPrinter_Private.h in Headers */,
+				BEDAFBA51B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.h in Headers */,
 				BE32CE1618C18A3E00DEE757 /* OCPrinter_Validator.h in Headers */,
 				BE26D3EB1890C90100DD31AB /* OCError.h in Headers */,
 			);
@@ -400,7 +418,7 @@
 		BE26D29D188F163D00DD31AB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Loyola University New Orleans";
 				TargetAttributes = {
 					BE26D3D11890C83600DD31AB = {
@@ -458,6 +476,7 @@
 				BE26D3BC18909E7D00DD31AB /* OCPrinter.m in Sources */,
 				BE26D3BD18909E8700DD31AB /* OCPrintJob.m in Sources */,
 				BE26D3BE18909E8900DD31AB /* OCError.m in Sources */,
+				BEDAFBA61B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.m in Sources */,
 				BEE7AE0918C53CEA00F61EFA /* OCPrinterUtility.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -470,6 +489,7 @@
 				BE26D3E61890C8E000DD31AB /* OCPrinter.m in Sources */,
 				BE26D3E71890C8E200DD31AB /* OCPrintJob.m in Sources */,
 				BE26D3E81890C8E800DD31AB /* OCError.m in Sources */,
+				BEDAFBA71B389FE600CCE9AC /* NSNetService+ObjectiveCUPS.m in Sources */,
 				BEE7AE0A18C53CEA00F61EFA /* OCPrinterUtility.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -633,6 +653,7 @@
 		BE26D3E11890C83700DD31AB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Objective-CUPS/Objective-CUPS-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -652,6 +673,7 @@
 		BE26D3E21890C83700DD31AB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Objective-CUPS/Objective-CUPS-Prefix.pch";
 				INSTALL_PATH = /usr/local/lib;

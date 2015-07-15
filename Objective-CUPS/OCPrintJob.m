@@ -27,6 +27,16 @@
 #import "OCError.h"
 #import <cups/cups.h>
 
+static dispatch_queue_t objective_cups_job_monitor_queue()
+{
+    static dispatch_queue_t queue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        queue = dispatch_queue_create("com.eeaapps.objective-cups.job.monitor.queue", DISPATCH_QUEUE_CONCURRENT );
+    });
+    return queue;
+}
+
 @interface OCPrintJob () {
 @private
     NSMutableArray *_files;
@@ -88,27 +98,33 @@
 {
     http_t *http; /* HTTP connection to server */
     ipp_status_t status;
+    BOOL success;
 
-#ifdef __MAC_10_9
-    http = httpConnect2(cupsServer(), ippPort(), NULL, 0, cupsEncryption(), 0, 0, NULL);
-#else
-    http = httpConnect(cupsServer(), ippPort());
-#endif
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber10_8_4) {
+        http = httpConnect2(cupsServer(), ippPort(), NULL, 0, cupsEncryption(), 0, 0, NULL);
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        http = httpConnect(cupsServer(), ippPort());
+#pragma clang diagnostic pop
+    }
 
     if (http == NULL)
         return [OCError cupsError:error];
 
     status = cupsCancelJob(_dest.UTF8String, (int)_jid);
 
-#ifdef __MAC_10_9
-    if (status != IPP_STATUS_OK)
-#else
-    if (status == IPP_OK || status == IPP_OK_SUBST)
-#endif
-    {
-        return YES;
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber10_8_4) {
+        success = (status != IPP_STATUS_OK);
+    } else {
+        success =  (status == IPP_OK || status == IPP_OK_SUBST);
     }
-    return [OCError cupsError:error];
+
+    if (success) {
+        return YES;
+    } else {
+        return [OCError cupsError:error];
+    }
 }
 
 - (void)addFiles:(NSArray *)files
@@ -155,14 +171,21 @@
     }
 
     if (_jobMonitor) {
-        ipp_jstate_t job_state = IPP_JOB_PENDING;
-        while (job_state < IPP_JOB_COMPLETED) {
-            job_state = self.status;
-            [_jobMonitor didRecieveStatusUpdate:self.statusDescription job:self];
-            if (job_state < IPP_JOB_STOPPED)
-                sleep(2);
-        }
+        dispatch_async(objective_cups_job_monitor_queue(), ^{
+            ipp_jstate_t job_state = IPP_JOB_PENDING;
+            while (job_state < IPP_JOB_COMPLETED) {
+                job_state = self.status;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_jobMonitor didRecieveStatusUpdate:self.statusDescription job:self];
+                });
+                if (job_state < IPP_JOB_STOPPED){
+                    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:2.0]];
+                }
+            }
+        });
     }
+
+
     return YES;
 }
 

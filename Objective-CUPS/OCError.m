@@ -73,42 +73,73 @@ NSString *const PrinterErrorDomain = @"com.eeaapps.objective-CUPS";
 {
     NSString *codeText = @"";
     switch (code) {
-    case kPrinterErrorInvalidURL
-        :
-        codeText = @"The URL to the printer is incorrect.  Contact the System Admin";
+    case kPrinterErrorInvalidURL:
+        codeText = NSLocalizedStringFromTable(@"The URL to the printer is incorrect.",
+                                              @"ObjecitveCUPS",
+                                              @"Error when url is incorrect");
         break;
     case kPrinterErrorPPDNotFound:
-        codeText = @"No PPD Avaliable, please download and install the drivers from the manufacturer.";
+        codeText = NSLocalizedStringFromTable(@"No PPD Avaliable, please download and install the drivers from the manufacturer.",
+                                              @"ObjecitveCUPS",
+                                              @"Error when url is incorrect");
         break;
     case kPrinterErrorInvalidProtocol:
-        codeText = @"That url scheme is not supported at this time";
+        codeText = NSLocalizedStringFromTable(@"That url scheme is not supported at this time",
+                                               @"ObjecitveCUPS",
+                                               @"Error when url is incorrect");
         break;
     case kPrinterErrorCantWriteFile:
-        codeText = @"Unable to write to PPD file";
+        codeText = NSLocalizedStringFromTable(@"Unable to write to PPD file",
+                                              @"ObjecitveCUPS",
+                                              @"Error when the the PPD file path is not access() W_OK");
         break;
     case kPrinterErrorCantOpenPPD:
-        codeText = @"Unable to open PPD file";
+        codeText = NSLocalizedStringFromTable(@"Unable to open PPD file",
+                                              @"ObjecitveCUPS",
+                                              @"Error when the ppd file cannot be opened do to permissions or existance");
+
         break;
     case kPrinterErrorIncompletePrinter:
-        codeText = @"Some Required attributes for the printer were not supplied";
+        codeText = NSLocalizedStringFromTable(@"Some Required attributes for the printer were not supplied",
+                                              @"ObjecitveCUPS",
+                                              @"Missing or invalid parameters when adding a printer");
+
         break;
     case kPrinterErrorBadCharactersInName:
-        codeText = @"The printer name must only be printable characters";
+        codeText = NSLocalizedStringFromTable(@"The printer name must only be printable characters",
+                                              @"ObjecitveCUPS",
+                                              @"Error because the printer name is not valid due to invalid characters");
+
         break;
     case kPrinterErrorNameTooLong:
-        codeText = @"the printer name is too long";
+        codeText = NSLocalizedStringFromTable(@"The printer name is too long",
+                                              @"ObjecitveCUPS",
+                                              @"Error becuase the printer name is too long");
+
         break;
     case kPrinterErrorProblemCancelingJobs:
-        codeText = @"there was a problem canceling some jobs";
+        codeText = NSLocalizedStringFromTable(@"There was a problem canceling some jobs",
+                                              @"ObjecitveCUPS",
+                                              @"Error when failed to cancel all jobs");
+
         break;
     case kPrintJobAlreaySubmitted:
-        codeText = @"Print Jobs can only be submitted once";
+        codeText = NSLocalizedStringFromTable(@"Print jobs can only be submitted once",
+                                              @"ObjecitveCUPS",
+                                              @"Error when submitting the same job multiple times.");
+
         break;
     case kPrintJobNoFileSubmitted:
-        codeText = @"Print Jobs can only be submitted once";
+        codeText = NSLocalizedStringFromTable(@"The print jobs was never submitted",
+                                              @"ObjecitveCUPS",
+                                              @"Error when a job was not submitted");
+
         break;
     default:
-        codeText = @"There was a unknown problem, sorry!";
+        codeText = NSLocalizedStringFromTable(@"There was a unknown problem.",
+                                              @"ObjecitveCUPS",
+                                              @"Generic error message");
+
         break;
     }
     return codeText;

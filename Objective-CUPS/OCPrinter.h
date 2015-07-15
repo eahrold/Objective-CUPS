@@ -26,13 +26,13 @@
 
 #import <Foundation/Foundation.h>
 
-
 typedef NS_ENUM(NSInteger, OCPrinterDefaultPorts) {
     kOCPrinterPortAutoDetect = -1,
-    kOCPrinterPortIPP = 631,
-    kOCPrinterPortIPPS = 631,
-    kOCPrinterPortHTTP = 631,
-    kOCPrinterPortHTTPS = 631,
+    kOCPrinterDefaultCupsPort = 631,
+    kOCPrinterPortIPP = kOCPrinterDefaultCupsPort,
+    kOCPrinterPortIPPS = kOCPrinterDefaultCupsPort,
+    kOCPrinterPortHTTP = kOCPrinterDefaultCupsPort,
+    kOCPrinterPortHTTPS = kOCPrinterDefaultCupsPort,
     kOCPrinterPortSocket = 9100,
     kOCPrinterPortLPD = 515,
     kOCPrinterPortSMBTCP = 445,
@@ -49,7 +49,7 @@ extern NSString *const kOCProtocolSocket; // Socket
 extern NSString *const kOCProtocolSMB; // SMB
 extern NSString *const kOCProtocolDNSSD; // DNSSD
 
-/** Class for Adding, Removing & Modifying CUPS Printers */
+/** Class for adding, removing & modifying CUPS printers */
 @interface OCPrinter : NSObject
 #pragma mark - Properties
 
@@ -60,21 +60,21 @@ extern NSString *const kOCProtocolDNSSD; // DNSSD
 @property (copy, nonatomic) NSString *host;
 
 /** An approperiate protocol for the printer. */
-@property (copy, nonatomic) NSString * protocol;
+@property (copy, nonatomic) NSString *protocol;
 
-/** An port for the printer. If unspecfied, the default port for the protocol is used. */
+/** Port for the printer. If unspecfied, the default port for the protocol is used. */
 @property (assign, nonatomic) NSInteger port;
 
-/**A human readable description of the printer */
+/** A human readable description of the printer */
 @property (copy, nonatomic) NSString *description;
 
-/**A human readable location of the printer */
+/** A human readable location of the printer */
 @property (copy, nonatomic) NSString *location;
 
 /** model name matching a result from lpinfo -m (end of each line)*/
 @property (copy, nonatomic) NSString *model;
 
-/**path to raw ppd file either .gz or .ppd */
+/** path to raw ppd file either .gz or .ppd */
 @property (copy, nonatomic) NSString *ppd;
 
 /** path where a PPD file can be download */
@@ -86,22 +86,25 @@ extern NSString *const kOCProtocolDNSSD; // DNSSD
 
 /** Array of options that can get applied to the printer 
 based on the model*/
-@property (weak, nonatomic, readonly) NSArray *availableOptions;
+@property (copy, nonatomic, readonly) NSArray *availableOptions;
 
-/**current numeric state of printer */
+/** Current numeric state of printer */
 @property (nonatomic, readonly) OSStatus status;
 
-/**current textual state of printer */
-@property (weak, nonatomic, readonly) NSString *statusMessage;
+/** Current textual state of printer */
+@property (copy, nonatomic, readonly) NSString *statusMessage;
 
-/**currently printing jobs */
-@property (weak, nonatomic, readonly) NSArray *jobs;
+/** Currently printing jobs */
+@property (copy, nonatomic, readonly) NSArray *jobs;
 
-/**full uri for cups dest*/
+/** Full uri for cups dest*/
 @property (copy, nonatomic) NSString *url __deprecated_msg("Use uri");
 
-/**full uri for cups dest*/
+/** Full uri for cups dest*/
 @property (copy, nonatomic) NSString *uri;
+
+/** is the printer installed on the current system. */
+@property (assign, nonatomic, readonly) BOOL isInstalled;
 
 #pragma mark - Methods
 /**
@@ -113,4 +116,8 @@ based on the model*/
  */
 - (id)initWithDictionary:(NSDictionary *)dict;
 
+@end
+
+@interface OCBonjourPrinter : OCPrinter
+- (instancetype)initWithNetService:(NSNetService *)netService;
 @end

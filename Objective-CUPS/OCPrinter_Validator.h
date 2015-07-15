@@ -34,12 +34,4 @@
  */
 - (BOOL)nameIsValid:(NSError **)error;
 
-/**
- *  <#Description#>
- *
- *  @param error <#error description#>
- *
- *  @return <#return value description#>
- */
-- (BOOL)configurePPD:(NSError **)error;
 @end

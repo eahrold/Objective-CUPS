@@ -29,26 +29,18 @@
 #import "OCPrintJob.h"
 #import "OCError.h"
 #import "OCManager.h"
+
+#import "NSNetService+ObjectiveCUPS.h"
+
 #import <cups/cups.h>
 #import <cups/ppd.h>
 #import <zlib.h>
 #import <syslog.h>
 
 typedef NS_ENUM(NSInteger, ppdDownloadModes) {
-    PPD_FROM_URL = 0,
-    PPD_FROM_CUPS_SERVER = 1,
-};
-
-typedef NS_ENUM(NSInteger, OCPrinterHostType) {
-    kOCUndefinedHostType,
-    kOCPrinterHostTypeIPP = 1 << 0, // IPP
-    kOCPrinterHostTypeIPPS = 1 << 1, // IPPS
-    kOCPrinterHostTypeHTTP = 1 << 2, // HTTP
-    kOCPrinterHostTypeHTTPS = 1 << 3, // HTTPS
-    kOCPrinterHostTypeLPD = 1 << 4, // LPD
-    kOCPrinterHostTypeSocket = 1 << 5, // Socket
-    kOCPrinterHostTypeSMB = 1 << 6, // SMB
-    kOCPrinterHostTypeDNSSD = 1 << 7, // DNS_SD
+    PPD_FROM_LOCAL_CUPS,
+    PPD_FROM_REMOTE_CUPS,
+    PPD_FROM_URL,
 };
 
 NSString *const kOCProtocolIPP = @"ipp"; // IPP
@@ -60,19 +52,17 @@ NSString *const kOCProtocolSocket = @"socket"; // Socket
 NSString *const kOCProtocolSMB = @"smb"; // SMB
 NSString *const kOCProtocolDNSSD = @"dnssd"; // DNSSD
 
-@implementation OCPrinter {
-    @private
-    OCPrinterHostType _hostType;
-}
-
+@implementation OCPrinter
 // Since this overrides the standard NSObject description property, manually synthesize it
 @synthesize description = _description;
+@synthesize ppd_tempfile = _ppd_tempfile;
+@synthesize hostType = _hostType;
 
 #pragma mark - Initializers / Secure Coding
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-    if ( self = [super init]) {
+    if (self = [super init]) {
         NSSet *whiteList = [NSSet setWithObjects:[NSDictionary class],
                                                  [NSString class],
                                                  [NSArray class],
@@ -160,8 +150,12 @@ NSString *const kOCProtocolDNSSD = @"dnssd"; // DNSSD
 
 - (id)initWithDictionary:(NSDictionary *)dict
 {
-    if (self = [super init]) {
-        [self setValuesForKeysWithDictionary:dict];
+    if (dict && (self = [super init])) {
+        [dict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            if ([self respondsToSelector:NSSelectorFromString(key)]) {
+                [self setValue:obj forKey:key];
+            }
+        }];
     }
     return self;
 }
@@ -169,43 +163,51 @@ NSString *const kOCProtocolDNSSD = @"dnssd"; // DNSSD
 - (void)dealloc
 {
     NSFileManager *fm = [NSFileManager defaultManager];
-    
-    if ([fm fileExistsAtPath:self.ppd_tempfile])
-        [fm removeItemAtPath:self.ppd_tempfile error:nil];
+    if ([fm fileExistsAtPath:_ppd_tempfile]) {
+        [fm removeItemAtPath:_ppd_tempfile error:nil];
+    }
 }
 
 #pragma mark - Accessors
-#pragma mark -- Setters
-- (void)setProtocol:(NSString *)protocol {
+#pragma mark-- Setters
+- (void)setProtocol:(NSString *)protocol
+{
     _protocol = protocol;
-    _hostType = 0;
-    // Setup the hostType enum for more concise compairsons.
-    if ([protocol isEqualToString:kOCProtocolIPP]) {
-        _hostType = kOCPrinterHostTypeIPP;
-    } else if ([protocol isEqualToString:kOCProtocolIPPS]) {
-        _hostType = kOCPrinterHostTypeIPPS;
-    }  else if ([protocol isEqualToString:kOCProtocolHTTP]) {
-        _hostType = kOCPrinterHostTypeHTTP;
-    } else if ([protocol isEqualToString:kOCProtocolHTTPS]) {
-        _hostType = kOCPrinterHostTypeHTTPS;
-    } else if ([protocol isEqualToString:kOCProtocolLPD]) {
-        _hostType = kOCPrinterHostTypeLPD;
-    } else if ([protocol isEqualToString:kOCProtocolSocket]) {
-        _hostType = kOCPrinterHostTypeSocket;
-    } else if ([protocol isEqualToString:kOCProtocolSMB]) {
-        _hostType = kOCPrinterHostTypeSMB;
-    } else if ([protocol isEqualToString:kOCProtocolDNSSD]) {
-        _hostType = kOCPrinterHostTypeDNSSD;
-    }
 }
-#pragma mark -- Getters
+
+- (OCPrinterHostType)hostType
+{
+    if (_hostType == 0) {
+        // Setup the hostType enum for more concise compairsons.
+        if ([_protocol isEqualToString:kOCProtocolIPP]) {
+            _hostType = kOCPrinterHostTypeIPP;
+        } else if ([_protocol isEqualToString:kOCProtocolIPPS]) {
+            _hostType = kOCPrinterHostTypeIPPS;
+        } else if ([_protocol isEqualToString:kOCProtocolHTTP]) {
+            _hostType = kOCPrinterHostTypeHTTP;
+        } else if ([_protocol isEqualToString:kOCProtocolHTTPS]) {
+            _hostType = kOCPrinterHostTypeHTTPS;
+        } else if ([_protocol isEqualToString:kOCProtocolLPD]) {
+            _hostType = kOCPrinterHostTypeLPD;
+        } else if ([_protocol isEqualToString:kOCProtocolSocket]) {
+            _hostType = kOCPrinterHostTypeSocket;
+        } else if ([_protocol isEqualToString:kOCProtocolSMB]) {
+            _hostType = kOCPrinterHostTypeSMB;
+        } else if ([_protocol isEqualToString:kOCProtocolDNSSD]) {
+            _hostType = kOCPrinterHostTypeDNSSD;
+        }
+    }
+    return _hostType;
+}
+#pragma mark-- Getters
 
 - (NSString *)url
 {
     return self.uri;
 }
 
-- (NSString *)uri {
+- (NSString *)uri
+{
     if (!_uri) {
         if (!_name || !_protocol || !_host) {
             NSLog(@"%@", [NSString stringWithFormat:@"Values Cannot be nil printer:%@ protocol:%@ host:%@", _name, _protocol, _host]);
@@ -215,68 +217,63 @@ NSString *const kOCProtocolDNSSD = @"dnssd"; // DNSSD
         // ipp and ipps for connecting to CUPS server
         NSString *hostString = [self hostString];
 
-        switch (_hostType) {
-            case kOCPrinterHostTypeIPP:
-            case kOCPrinterHostTypeIPPS: {
-                uri = [NSString stringWithFormat:@"%@://%@/printers/%@", _protocol, hostString, _name];
-                break;
-            }
-            case kOCPrinterHostTypeHTTP:
-            case kOCPrinterHostTypeHTTPS: {
-                uri = [NSString stringWithFormat:@"%@://%@/printers/%@", _protocol, hostString, _name];
-                break;
-            }
-            case kOCPrinterHostTypeLPD: {
-                uri = [NSString stringWithFormat:@"%@://%@", _protocol, hostString];
-                break;
-            }
-            case kOCPrinterHostTypeSocket: {
-                uri = [NSString stringWithFormat:@"%@://%@:9100", _protocol, hostString];
-                break;
-            }
-            case kOCPrinterHostTypeSMB: {
-                uri = [NSString stringWithFormat:@"%@://%@/%@", _protocol, hostString, _name];
-                break;
-            }
-            case kOCPrinterHostTypeDNSSD: {
-                uri = [NSString stringWithFormat:@"%@://%@._pdl-datastream._tcp.local./?bidi", _protocol, hostString];
-                break;
-            }
-            case kOCUndefinedHostType:
-            default: {
-                NSLog(@"Improper uri Format");
-                break;
-            }
+        switch (self.hostType) {
+        case kOCPrinterHostTypeIPP:
+        case kOCPrinterHostTypeIPPS:
+        case kOCPrinterHostTypeHTTP:
+        case kOCPrinterHostTypeHTTPS: {
+            uri = [NSString stringWithFormat:@"%@://%@/printers/%@", _protocol, hostString, _name];
+            break;
         }
-        _uri =  [uri stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        case kOCPrinterHostTypeLPD:
+        case kOCPrinterHostTypeSocket: {
+            uri = [NSString stringWithFormat:@"%@://%@", _protocol, hostString];
+            break;
+        }
+        case kOCPrinterHostTypeSMB: {
+            uri = [NSString stringWithFormat:@"%@://%@/%@", _protocol, hostString, _name];
+            break;
+        }
+        case kOCPrinterHostTypeDNSSD: {
+            uri = [NSString stringWithFormat:@"%@://%@._pdl-datastream._tcp.local./?bidi", _protocol, hostString];
+            break;
+        }
+        case kOCUndefinedHostType:
+        default: {
+            NSLog(@"Improper uri Format");
+            break;
+        }
+        }
+        _uri = [uri stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     }
     return _uri;
 }
 
-- (NSInteger)port {
+- (NSInteger)port
+{
     if (!_port) {
-        switch (_hostType) {
-            case kOCPrinterHostTypeHTTP: {
-                _port = kOCPrinterPortHTTP;
-                break;
-            }
-            case kOCPrinterHostTypeHTTPS: {
-                _port = kOCPrinterPortHTTPS;
-                break;
-            }
-            case kOCPrinterHostTypeSocket: {
-                _port = kOCPrinterPortSocket;
-                break;
-            }
-            case kOCPrinterHostTypeIPP:
-            case kOCPrinterHostTypeIPPS:
-            case kOCPrinterHostTypeLPD:
-            case kOCPrinterHostTypeSMB:
-            case kOCPrinterHostTypeDNSSD:
-            default: {
-                _port = kOCPrinterPortAutoDetect;
-                break;
-            }
+        switch (self.hostType) {
+        case kOCPrinterHostTypeHTTP: {
+            _port = kOCPrinterPortHTTP;
+            break;
+        }
+        case kOCPrinterHostTypeHTTPS: {
+            _port = kOCPrinterPortHTTPS;
+            break;
+        }
+        case kOCPrinterHostTypeSocket: {
+            _port = kOCPrinterPortSocket;
+            break;
+        }
+        case kOCPrinterHostTypeIPP:
+        case kOCPrinterHostTypeIPPS:
+        case kOCPrinterHostTypeLPD:
+        case kOCPrinterHostTypeSMB:
+        case kOCPrinterHostTypeDNSSD:
+        default: {
+            _port = kOCPrinterPortAutoDetect;
+            break;
+        }
         }
     }
     return _port;
@@ -289,7 +286,7 @@ NSString *const kOCProtocolDNSSD = @"dnssd"; // DNSSD
 
 - (NSString *)ppd
 {
-    if (!_ppd){
+    if (!_ppd) {
         _ppd = [[OCManager ppdsForModel:_model] lastObject];
     }
     return _ppd;
@@ -297,7 +294,32 @@ NSString *const kOCProtocolDNSSD = @"dnssd"; // DNSSD
 
 - (NSString *)ppd_tempfile
 {
-    return [NSTemporaryDirectory() stringByAppendingPathComponent:_name];
+    if (!_ppd_tempfile || access(_ppd_tempfile.UTF8String, F_OK) != 0) {
+        NSString *ppd = nil;
+        /* First see if there's a ppd for the specific model. */
+        if (self.ppd) {
+            /* Copy the file to the tmp directory...*/
+            ppd = [NSTemporaryDirectory() stringByAppendingString:_name];
+            if (access(ppd.UTF8String, W_OK) == 0) {
+                unlink(ppd.UTF8String);
+            }
+
+            if ([[NSFileManager defaultManager] copyItemAtPath:self.ppd toPath:ppd error:nil]) {
+                _ppd_tempfile = ppd;
+            }
+
+            /* Check if there's a PPD already assigned for the printer locally by name. */
+        } else if ((ppd = [self getPPDFromCUPSWithMode:PPD_FROM_LOCAL_CUPS])) {
+            _ppd_tempfile = ppd;
+            /* Next see if the user specified a custom url where to obtain the PPD. */
+        } else if ((ppd = [self downloadCustomPPD])) {
+            _ppd_tempfile = ppd;
+            /* Finally try to obtain one from the remote cups server */
+        } else if ((ppd = [self getPPDFromCUPSWithMode:PPD_FROM_REMOTE_CUPS])) {
+            _ppd_tempfile = ppd;
+        }
+    }
+    return _ppd_tempfile;
 }
 
 - (NSArray *)jobs
@@ -335,16 +357,16 @@ NSString *const kOCProtocolDNSSD = @"dnssd"; // DNSSD
 {
     switch (self.status) {
     case IPP_PRINTER_IDLE:
-        _statusMessage = @"Idle";
+        _statusMessage = NSLocalizedStringFromTable(@"Idle", @"ObjecitveCUPS", @"Idle status message");
         break;
     case IPP_PRINTER_PROCESSING:
-        _statusMessage = @"Processing";
+        _statusMessage = NSLocalizedStringFromTable(@"Processing", @"ObjecitveCUPS", @"Idle status message");
         break;
     case IPP_PRINTER_STOPPED:
-        _statusMessage = @"Stopped";
+        _statusMessage = NSLocalizedStringFromTable(@"Stopped", @"ObjecitveCUPS", @"Idle status message");
         break;
     default:
-        _statusMessage = @"unknown";
+        _statusMessage = NSLocalizedStringFromTable(@"Unknown", @"ObjecitveCUPS", @"Idle status message");
         break;
     }
     return _statusMessage;
@@ -352,22 +374,32 @@ NSString *const kOCProtocolDNSSD = @"dnssd"; // DNSSD
 
 - (NSArray *)availableOptions
 {
-    NSArray *opts = nil;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    NSString *file = [NSString stringWithUTF8String:cupsGetPPD(_name.UTF8String)];
-#pragma clang diagnostic pop
-    if (file) {
-        opts = [self optionsForPPD:file];
-        unlink(file.UTF8String);
+    return [self optionsForPPD:self.ppd_tempfile];
+}
+
+- (BOOL)isInstalled {
+    cups_dest_t *dest = NULL;
+    cups_dest_t *dests = NULL;
+    int numDests = 0;
+
+    BOOL isInstalled = NO;
+    if((numDests = cupsGetDests2(CUPS_HTTP_DEFAULT, &dests)) > 0){
+        if ((dest = cupsGetDest(self.name.UTF8String, NULL, numDests, dests)) != NULL){
+            isInstalled = YES;
+        }
     }
 
-    return opts;
+    if (dest != NULL) {
+        cupsFreeDests(numDests, dests);
+    }
+
+    return isInstalled;
 }
 
 #pragma mark - Private
 
-- (NSString *)hostString {
+- (NSString *)hostString
+{
     NSInteger port = self.port;
     NSMutableString *string = self.host.mutableCopy;
     if (port && (port != kOCPrinterPortAutoDetect)) {
@@ -376,86 +408,106 @@ NSString *const kOCProtocolDNSSD = @"dnssd"; // DNSSD
     return string.copy;
 }
 
-- (BOOL)configurePPD:(NSError *__autoreleasing *)error
+- (NSString *)getPPDFromCUPSWithMode:(ppdDownloadModes)mode
 {
-    NSString *path;
+    NSString *ppd_file = nil;
+    http_t *http = NULL;
+    time_t modtime;
+    http_status_t status;
+    char *buffer;
 
-    // Check if we can find a match locally...
-    NSString *localPPD = self.ppd;
 
-    if (localPPD) {
-        NSFileManager *fm = [NSFileManager defaultManager];
-        if ([fm fileExistsAtPath:localPPD]) {
-            // If the file exists remove it so we can get a new one.
-            if ([fm fileExistsAtPath:self.ppd_tempfile]) {
-                [fm removeItemAtPath:self.ppd_tempfile error:nil];
-            }
+    http_t * (^remoteConnectionWithEncryption)(BOOL) = ^http_t *(BOOL encrypted) {
+        http_t *http_t = NULL;
 
-            if ([fm copyItemAtPath:localPPD toPath:self.ppd_tempfile error:nil]) {
-                return YES;
-            }
+        http_encryption_t encryption = encrypted ? HTTP_ENCRYPT_IF_REQUESTED : cupsEncryption();
+
+        if (NSFoundationVersionNumber > NSFoundationVersionNumber10_8_4) {
+            http_t = httpConnect2(_host.UTF8String, ippPort(), NULL, 0, encryption, 0, 2000, NULL);
+        } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            http_t = httpConnect(cupsServer(), ippPort());
+#pragma clang diagnostic pop
+
+        }
+
+        return http_t;
+    };
+
+
+    if (mode == PPD_FROM_LOCAL_CUPS) {
+        http = CUPS_HTTP_DEFAULT;
+    } else if (mode == PPD_FROM_REMOTE_CUPS) {
+        if (self.hostType & (kOCPrinterHostTypeIPP | kOCPrinterHostTypeHTTP)) {
+            http = remoteConnectionWithEncryption(NO);
+        } else if (self.hostType & (kOCPrinterHostTypeIPPS | kOCPrinterHostTypeHTTPS)) {
+            http = remoteConnectionWithEncryption(YES);
+        } else {
+            /* host type is not CUPS just return.*/
+            return nil;
         }
     }
 
-    // If not local, try and get if from a specified URL
-    if (_ppd_url) {
-        path = [_ppd_url stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
-        if ([self downloadPPD:[NSURL URLWithString:path] mode:PPD_FROM_URL]) {
-            return YES;
+    buffer = (char *)malloc(MAXPATHLEN);
+    if (http) {
+        status = cupsGetPPD3(http, _name.UTF8String, &modtime, buffer, MAXPATHLEN);
+        if (status == HTTP_STATUS_OK) {
+            ppd_file = [NSString stringWithUTF8String:buffer].stringByStandardizingPath;
+        } else if (access(buffer, W_OK)) {
+            unlink(buffer);
         }
     }
 
-    // Otherwise, if it's getting shared via ipp, try to grab it from the CUPS server
-    if (_hostType & ( kOCPrinterHostTypeIPP | kOCPrinterHostTypeIPPS)) {
-        path = [NSString stringWithFormat:@"http://%@:631/printers/%@.ppd", _host, _name];
-        if ([self downloadPPD:[NSURL URLWithString:path] mode:PPD_FROM_CUPS_SERVER]) {
-            return YES;
-        }
+    if (buffer != NULL) {
+        free(buffer);
     }
 
-    // if we still don't have it error out
-    return [OCError errorWithCode:kPrinterErrorPPDNotFound error:error];
+    return ppd_file.length ? ppd_file : nil;
 }
 
-- (BOOL)downloadPPD:(NSURL *)URL mode:(ppdDownloadModes)mode
+- (NSString *)downloadCustomPPD
 {
-    if (!URL) {
-        return NO;
-    }
+    BOOL success = NO;
+    NSURL *url = nil;
+    NSString *customPPD = nil;
 
-    NSError *error = nil;
-    NSHTTPURLResponse *response = nil;
+    if (_ppd_url || (url = [NSURL URLWithString:_ppd_url])) {
+        NSError *error = nil;
+        NSHTTPURLResponse *response = nil;
 
-    // Create the request.
-    NSMutableURLRequest *ppdRequest = [NSMutableURLRequest requestWithURL:URL];
+        // Create the request.
+        NSMutableURLRequest *ppdRequest = [NSMutableURLRequest requestWithURL:url];
 
-    // set as GET request
-    ppdRequest.HTTPMethod = @"GET";
-    ppdRequest.timeoutInterval = 3;
+        // set as GET request
+        ppdRequest.HTTPMethod = @"GET";
+        ppdRequest.timeoutInterval = 2;
 
-    // set header fields
-    [ppdRequest setValue:@"application/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+        // set header fields
+        [ppdRequest setValue:@"application/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
 
-    // Create url connection and fire request
-    NSData *data = [NSURLConnection sendSynchronousRequest:ppdRequest
-                                         returningResponse:&response
-                                                     error:&error];
+        // Create url connection and fire request
+        NSData *data = [NSURLConnection sendSynchronousRequest:ppdRequest
+                                             returningResponse:&response
+                                                         error:&error];
 
-    NSFileManager *fm = [NSFileManager defaultManager];
-    if ([response statusCode] >= 400 || !data) {
-        [fm removeItemAtPath:self.ppd_tempfile error:nil];
-        return NO;
-    } else {
-        NSString *downloadedPPD = [self.ppd_tempfile stringByAppendingString:@".gz"];
-        if ([fm createFileAtPath:downloadedPPD contents:data attributes:nil]) {
-            if (mode == PPD_FROM_CUPS_SERVER) {
-                return [fm moveItemAtPath:downloadedPPD toPath:self.ppd_tempfile error:&error];
-            } else {
-                return [self unzipPPD:downloadedPPD to:self.ppd_tempfile error:&error];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        if ((success = ([response statusCode] < 400)) && (success = (data != nil))) {
+            NSString *downloadedPPD = [[NSTemporaryDirectory()
+                stringByAppendingPathComponent:_name]
+                stringByAppendingPathExtension:@"gz"];
+
+            if ((success = [fm createFileAtPath:downloadedPPD contents:data attributes:nil])) {
+                NSString *tmpPPD = downloadedPPD.stringByDeletingPathExtension;
+                if ((success = [self unzipPPD:downloadedPPD to:tmpPPD error:&error])) {
+                    customPPD = tmpPPD;
+                }
+                unlink(downloadedPPD.UTF8String);
             }
         }
     }
-    return NO;
+
+    return customPPD;
 }
 
 - (BOOL)unzipPPD:(NSString *)inPath to:(NSString *)outPath error:(NSError *__autoreleasing *)error
@@ -552,6 +604,22 @@ NSString *const kOCProtocolDNSSD = @"dnssd"; // DNSSD
     ppdClose(ppd);
 #pragma clang diagnostic pop
     return array;
+}
+
+@end
+
+@implementation OCBonjourPrinter
+- (instancetype)initWithNetService:(NSNetService *)netService {
+    NSDictionary *dict = netService.oc_serializedTxtRecord;
+        self = [super init];
+        if (self) {
+            self.name = dict[@"name"];
+            self.description = dict[@"description"];
+            self.host = dict[@"host"];
+            self.model = dict[@"ty"]; // Type
+            self.protocol = kOCProtocolDNSSD;
+        }
+        return self;
 }
 
 @end
